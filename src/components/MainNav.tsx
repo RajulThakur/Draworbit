@@ -1,6 +1,7 @@
-'use client'
-import { useCursor } from "@/context/cursorContext";
-import { NavOptions } from "@/Type/navbarType";
+'use client';
+import {useCursor} from '@/context/cursorContext';
+import { useData } from '@/context/dataContext';
+import {NavOptions} from '@/Type/navbarType';
 import {
   ArrowRight,
   Circle,
@@ -11,32 +12,65 @@ import {
   Pencil,
   RectangleHorizontal,
   TextCursor,
-} from "lucide-react";
+} from 'lucide-react';
+import {ChangeEvent, useRef} from 'react';
 function MainNav() {
-  const options:NavOptions[] = [
-    { name: "hand", icon: <Hand strokeWidth={1.69} /> },
-    { name: "arrow", icon: <TextCursor strokeWidth={1.69} /> },
-    { name: "rectangle", icon: <RectangleHorizontal strokeWidth={1.69} /> },
-    { name: "circle", icon: <Circle strokeWidth={1.69} /> },
-    { name: "line", icon: <ArrowRight strokeWidth={1.69} /> },
-    { name: "draw", icon: <Pencil strokeWidth={1.69} /> },
-    { name: "picture", icon: <Image strokeWidth={1.69} /> },
-    { name: "text", icon: <LetterText strokeWidth={1.69} /> },
-    { name: "eraser", icon: <Eraser strokeWidth={1.69} /> },
+  const options: NavOptions[] = [
+    {name: 'hand', icon: <Hand strokeWidth={1.69} />},
+    {name: 'arrow', icon: <TextCursor strokeWidth={1.69} />},
+    {name: 'rectangle', icon: <RectangleHorizontal strokeWidth={1.69} />},
+    {name: 'circle', icon: <Circle strokeWidth={1.69} />},
+    {name: 'line', icon: <ArrowRight strokeWidth={1.69} />},
+    {name: 'draw', icon: <Pencil strokeWidth={1.69} />},
+    {name: 'picture', icon: <Image strokeWidth={1.69} />},
+    {name: 'text', icon: <LetterText strokeWidth={1.69} />},
+    {name: 'eraser', icon: <Eraser strokeWidth={1.69} />},
   ];
-  const { setCursor } = useCursor();
+  const {setCursor, cursor} = useCursor();
+  const {setData} = useData();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handlePictureClick = () => {
+    setCursor('picture');
+    // Trigger the hidden file input
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      // Create URL for preview
+      const imageUrl = URL.createObjectURL(file);
+      setData({src: imageUrl});
+      
+      console.log('Selected file:', file);
+      console.log('Image URL for preview:', imageUrl);
+
+    }
+  };
   return (
-    <div className="fixed z-10 top-4 right-1/3 left-1/3 flex items-center justify-center space-x-2 rounded-xl bg-gray-100 dark:bg-slate-800 px-6 py-1">
+    <div className="fixed top-4 right-1/3 left-1/3 z-10 flex items-center justify-center space-x-2 rounded-xl bg-gray-100 px-6 py-1 dark:bg-slate-800">
       {options.map((option) => (
         <button
-          onClick={() => setCursor(option.name)}
+          onClick={
+            option.name === 'picture'
+              ? handlePictureClick
+              : () => setCursor(option.name)
+          }
           key={option.name}
-          className="flex size-13 flex-col items-center justify-between rounded-md p-2 text-[0.69em] hover:bg-gray-200 dark:hover:bg-gray-700"
-        >
+          className={`flex size-13 flex-col items-center justify-between rounded-md p-2 text-[0.69em] hover:bg-blue-100 dark:hover:bg-slate-700 ${option.name === cursor ? 'bg-blue-200 dark:bg-slate-700' : ''}`}>
           {option.icon}
           <span className="capitalize">{option.name}</span>
         </button>
       ))}
+      {/* Hidden file input outside of the button map */}
+      <input
+        ref={fileInputRef}
+        className="hidden"
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
     </div>
   );
 }

@@ -3,11 +3,14 @@ import {useColor} from '@/context/colorContext';
 import {useCursor} from '@/context/cursorContext';
 import {useEffect, useRef, useState} from 'react';
 import {Draw} from '../../_draw/draw';
+import {useData} from '@/context/dataContext';
+import {PenDraw} from '@/app/_draw/penDraw';
 
 export default function Dashboard() {
   const c = useRef<HTMLCanvasElement | null>(null);
   const [dim, setDim] = useState({width: 0, height: 0});
   const {cursor, setCursor} = useCursor();
+  const {data} = useData();
   const {strokeColor} = useColor();
 
   useEffect(() => {
@@ -23,10 +26,15 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (c.current) {
-      const cleanup = Draw(c.current, cursor, setCursor, strokeColor);
+      let cleanup;
+      if (cursor === 'draw') {
+        cleanup = PenDraw(c.current, strokeColor);
+      } else {
+        cleanup = Draw(c.current, cursor, setCursor, strokeColor, data);
+      }
       return cleanup;
     }
-  }, [cursor, strokeColor, setCursor]);
+  }, [cursor, strokeColor, setCursor, data]);
 
   return (
     <canvas
@@ -34,7 +42,7 @@ export default function Dashboard() {
       width={dim.width}
       height={dim.height}
       ref={c}
-      className="dark:bg-background bg-slate-200"
+      className="dark:bg-background bg-slate-300"
     />
   );
 }

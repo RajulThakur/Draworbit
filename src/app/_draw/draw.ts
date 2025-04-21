@@ -1,10 +1,15 @@
+import { Data } from '@/context/dataContext';
 import {NavbarType} from '@/Type/navbarType';
 interface Shape {
   type: NavbarType;
   x: number;
   y: number;
   width: number;
+  path?: string;
   height: number;
+  fontSize?: number;
+  color?: string;
+  Data: Data;
 }
 const shape: Shape[] = [];
 
@@ -12,13 +17,15 @@ export function Draw(
   c: HTMLCanvasElement,
   cursor: NavbarType,
   setCursor: (cursor: NavbarType) => void,
-  strokeColor: string
+  strokeColor: string,
+  data:Data,
+
 ) {
   if (!c) return;
   const ctx = c.getContext('2d');
   if (!ctx) return;
   ctx.strokeStyle = strokeColor;
-  const element: Shape = {x: 0, y: 0, height: 0, width: 0, type: 'hand'};
+  const element: Shape = {x: 0, y: 0, height: 0, width: 0, type: 'hand', Data:data};
   function handleMouseDown(event: MouseEvent) {
     if (!ctx) return;
     element.type = cursor;
@@ -67,7 +74,7 @@ function ShapeRenderer(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;
   switch (type) {
     case 'line':
-      // DrawLine(e, c);
+      DrawLine(ctx, x, y, height, width);
       console.log('line');
       break;
     case 'arrow':
@@ -79,12 +86,14 @@ function ShapeRenderer(ctx: CanvasRenderingContext2D, shape: Shape) {
       break;
     case 'circle':
       console.log('circle');
-      // DrawCircle(e, c);
+      DrawEllipse(ctx, x, y, width, height);
       break;
     case 'picture':
+      DrawImage(ctx, shape.Data?.src, x, y, width, height);
       console.log('picture');
       break;
     case 'text':
+      DrawText(ctx, 'Hello', x, y, 20, ctx.strokeStyle as string);
       console.log('text');
       break;
     case 'eraser':
@@ -103,9 +112,9 @@ function DrawRectangle(
   width: number
 ) {
   if (!ctx) return;
-  ctx.beginPath(); // Add this
-  ctx.rect(x, y, width, height); // Note: switched height and width order
-  ctx.stroke(); // Add this
+  ctx.beginPath();
+  ctx.rect(x, y, width, height);
+  ctx.stroke();
 }
 function ClearCanvas(
   canvas: HTMLCanvasElement,
@@ -119,67 +128,81 @@ function ClearCanvas(
   });
 }
 
-// function DrawCircle(e: MouseEvent, c: HTMLCanvasElement) {
-//   const ctx = c.getContext('2d');
-//   const {PI} = Math;
-//   if (!ctx) return;
+function DrawEllipse(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radiusX: number,
+  radiusY: number
+) {
+  if (!ctx) return;
+  radiusX = Math.abs(radiusX);
+  radiusY = Math.abs(radiusY);
+  const centerX = x + radiusX/2;
+   const centerY = y + radiusY/2;
+  ctx.beginPath();
+  ctx.ellipse(centerX,centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+  ctx.stroke();
+}
 
-//   // Persist the circle object across function calls
-//   const circleObj = DrawCircle.circleObj || {id: 45, x: 0, y: 0, radius: 0};
+function DrawText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  fontSize: number,
+  color: string
+) {
+  if (!ctx) return;
+  ctx.font = `${fontSize}px Arial`;
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+}
+function DrawImage(
+  ctx: CanvasRenderingContext2D,
+  src: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) {
+  if (!ctx) return;
+  const img = new Image();
+  img.src = src;
+  img.onload = () => {
+    ctx.drawImage(img, x, y, width, height);
+  };
+}
+function DrawLine(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  height: number,
+  width: number
+) {
+  if (!ctx) return;
 
-//   if (e.type === 'mousedown') {
-//     DrawCircle.circleObj = circleObj; // Save the updated circleObj
-//   } else if (e.type === 'mousemove') {
-//     const radiusX = e.clientX - circleObj.x;
-//     const radiusY = e.clientY - circleObj.y;
-//     circleObj.radius = Math.sqrt(radiusX * radiusX + radiusY * radiusY);
-//     DrawCircle.circleObj = circleObj; // Save the updated circleObj
+  const headLength = 10; // Length of arrow head
+  const dx = x + width - x;
+  const dy = y + height - y;
+  const angle = Math.atan2(dy, dx);
 
-//     // Clear the canvas before redrawing
-//     ctx.clearRect(circleObj.x, circleObj.x, c.width, c.height);
+  // Draw the main line
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + width, y + height);
 
-//     // Draw the circle
-//     ctx.beginPath();
-//     ctx.arc(circleObj.x, circleObj.y, circleObj.radius, 0, 2 * PI);
-//     ctx.stroke();
-//   } else if (e.type === 'mouseup') {
-//     console.log('mouseup');
+  // Draw the arrow head
+  ctx.moveTo(x + width, y + height);
+  ctx.lineTo(
+    x + width - headLength * Math.cos(angle - Math.PI / 6),
+    y + height - headLength * Math.sin(angle - Math.PI / 6)
+  );
+  ctx.moveTo(x + width, y + height);
+  ctx.lineTo(
+    x + width - headLength * Math.cos(angle + Math.PI / 6),
+    y + height - headLength * Math.sin(angle + Math.PI / 6)
+  );
 
-//     // Finalize the circle
-//     ctx.beginPath();
-//     ctx.arc(circleObj.x, circleObj.y, circleObj.radius, 0, 2 * PI);
-//     ctx.stroke();
-
-//     // Clear the temporary circleObj
-//     delete DrawCircle.circleObj;
-//   }
-// }
-// function DrawLine(e: MouseEvent, c: HTMLCanvasElement) {
-//   const ctx = c.getContext('2d');
-//   if (!ctx) return;
-//   const lineObj = DrawLine.lineObj || {id: 45, x: 0, y: 0, x1: 0, y1: 0};
-//   if (e.type === 'mousedown') {
-//     lineObj.x = e.clientX - c.getBoundingClientRect().left;
-//     lineObj.y = e.clientY - c.getBoundingClientRect().top;
-//     DrawLine.lineObj = lineObj; // Save the updated lineObj
-//   } else if (e.type === 'mousemove') {
-//     lineObj.x1 = e.clientX - c.getBoundingClientRect().left;
-//     lineObj.y1 = e.clientY - c.getBoundingClientRect().top;
-//     // Clear the canvas before redrawing
-//     ctx.clearRect(0, 0, c.width, c.height);
-//     // Draw the line
-//     ctx.beginPath();
-//     ctx.moveTo(lineObj.x, lineObj.y);
-//     ctx.lineTo(lineObj.x1, lineObj.y1);
-//     ctx.stroke();
-//   } else if (e.type === 'mouseup') {
-//     console.log('mouseup');
-//     // Finalize the line
-//     ctx.beginPath();
-//     ctx.moveTo(lineObj.x, lineObj.y);
-//     ctx.lineTo(lineObj.x1, lineObj.y1);
-//     ctx.stroke();
-//     // Clear the temporary lineObj
-//     delete DrawLine.lineObj;
-//   }
-// }
+  ctx.stroke();
+}
