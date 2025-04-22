@@ -9,7 +9,9 @@ export type NavbarType =
   | 'draw'
   | 'picture'
   | 'text'
-  | 'eraser';
+  | 'diamond'
+  | 'eraser'
+  | 'square';
 export interface NavOptions {
   name: NavbarType;
   icon: ReactNode;

@@ -1,5 +1,4 @@
-
-export function drawRectangle(
+export function drawSquare(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
@@ -13,8 +12,9 @@ export function drawRectangle(
   const alignedY = Math.round(y);
   const alignedWidth = Math.round(width);
   const alignedHeight = Math.round(height);
+  const side = Math.min(alignedWidth, alignedHeight);
 
   ctx.lineWidth = 2;
-  ctx.rect(alignedX, alignedY, alignedWidth, alignedHeight);
+  ctx.rect(alignedX, alignedY, side, side);
   ctx.stroke();
 }
