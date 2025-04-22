@@ -15,7 +15,7 @@ function Hamburger() {
     <>
       {/* Hamburger Button */}
       <Button
-        className="fixed top-4 right-4 bg-purple-500 text-foreground hover:bg-purple-600 "
+        className="text-foreground fixed top-4 right-4 bg-purple-500 hover:bg-purple-600"
         onClick={() => setIsExpanded(!isExpanded)}>
         <AlignJustify />
       </Button>
@@ -27,8 +27,12 @@ function Hamburger() {
             <div
               key={index}
               className="flex cursor-pointer items-center space-x-2 rounded-md px-3 py-1 hover:bg-gray-100 dark:hover:bg-slate-700">
-              <span className="text-purple-500 dark:text-foreground">{menu.icon}</span>
-              <span className="text-gray-700 dark:text-slate-200">{menu.title}</span>
+              <span className="dark:text-foreground text-purple-500">
+                {menu.icon}
+              </span>
+              <span className="text-gray-700 dark:text-slate-200">
+                {menu.title}
+              </span>
             </div>
           ))}
         </div>

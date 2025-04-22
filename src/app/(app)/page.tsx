@@ -8,7 +8,7 @@ function Home() {
         <div className="absolute top-15 left-5 size-24">
           <Image
             fill
-            className="object-contain dark:invert "
+            className="object-contain dark:invert"
             alt="arrow"
             src={'/arrow/share.png'}
           />
@@ -16,7 +16,7 @@ function Home() {
         <div className="absolute top-15 right-5 size-24">
           <Image
             fill
-            className="object-contain dark:invert "
+            className="object-contain dark:invert"
             alt="menu"
             src={'/arrow/menu.png'}
           />
@@ -24,7 +24,7 @@ function Home() {
         <div className="absolute bottom-15 left-15 size-24">
           <Image
             fill
-            className="object-contain dark:invert "
+            className="object-contain dark:invert"
             alt="zoom"
             src={'/arrow/zoom.png'}
           />
@@ -32,7 +32,7 @@ function Home() {
         <div className="absolute bottom-15 left-35 size-24">
           <Image
             fill
-            className="object-contain dark:invert "
+            className="object-contain dark:invert"
             alt="undo"
             src={'/arrow/undo.png'}
           />

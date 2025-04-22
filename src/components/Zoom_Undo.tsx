@@ -4,7 +4,7 @@ import Button from '@/ui/Button';
 import {Minus, Plus, Redo, Undo} from 'lucide-react';
 
 function Zoom_Undo() {
-  const {setScale} = useCursor();
+  const {setScale, scale} = useCursor();
   function handlePlusScale() {
     setScale((prev) => prev + 10);
   }
@@ -19,7 +19,7 @@ function Zoom_Undo() {
           className="rounded-l-xl p-3 transition-all hover:bg-purple-400 dark:hover:bg-slate-700">
           <Plus />
         </span>
-        <span className="px-4">100%</span>
+        <span className="px-4 select-none">{scale}%</span>
         <span
           onClick={handleMinusScale}
           className="rounded-r-xl p-3 transition-all hover:bg-purple-400 dark:hover:bg-slate-700">

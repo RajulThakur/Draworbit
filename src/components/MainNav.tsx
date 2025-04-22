@@ -1,6 +1,6 @@
 'use client';
 import {useCursor} from '@/context/cursorContext';
-import { useData } from '@/context/dataContext';
+import {useData} from '@/context/dataContext';
 import {NavOptions} from '@/Type/navbarType';
 import {
   ArrowRight,
@@ -42,10 +42,9 @@ function MainNav() {
       // Create URL for preview
       const imageUrl = URL.createObjectURL(file);
       setData({src: imageUrl});
-      
+
       console.log('Selected file:', file);
       console.log('Image URL for preview:', imageUrl);
-
     }
   };
   return (

@@ -17,31 +17,66 @@ export default function Dashboard() {
     const height = window.innerHeight;
     const width = window.innerWidth;
     setDim({width, height});
-    window.addEventListener('resize', () => {
+
+    // Handle window resize
+    const handleResize = () => {
       const height = window.innerHeight;
       const width = window.innerWidth;
       setDim({width, height});
-    });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     if (c.current) {
-      let cleanup;
-      if (cursor === 'draw') {
-        cleanup = PenDraw(c.current, strokeColor);
-      } else {
-        cleanup = Draw(c.current, cursor, setCursor, strokeColor, data);
+      const canvas = c.current;
+      const ctx = canvas.getContext('2d');
+
+      if (ctx) {
+        // Get device pixel ratio
+        const dpr = window.devicePixelRatio || 1;
+
+        // Set canvas size accounting for DPR
+        canvas.width = dim.width * dpr;
+        canvas.height = dim.height * dpr;
+
+        // Scale context to match DPR
+        ctx.scale(dpr, dpr);
+
+        // Set crisp stroke settings
+        ctx.imageSmoothingEnabled = false;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 2; // Set default line width
+
+        // Only initialize drawing if not in hand mode
+        if (cursor !== 'hand') {
+          let cleanup;
+          if (cursor === 'draw') {
+            cleanup = PenDraw(canvas, strokeColor);
+          } else {
+            cleanup = Draw(canvas, cursor, setCursor, strokeColor, data);
+          }
+          return cleanup;
+        }
       }
-      return cleanup;
     }
-  }, [cursor, strokeColor, setCursor, data]);
+  }, [cursor, strokeColor, setCursor, data, dim]);
 
   return (
     <canvas
       id="canvas"
-      width={dim.width}
-      height={dim.height}
       ref={c}
+      style={{
+        width: `${dim.width}px`,
+        height: `${dim.height}px`,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 0,
+      }}
       className="dark:bg-background bg-slate-300"
     />
   );
