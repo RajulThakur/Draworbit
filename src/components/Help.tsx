@@ -1,3 +1,4 @@
+'use client'
 import {ShieldQuestion} from 'lucide-react';
 
 function Help() {

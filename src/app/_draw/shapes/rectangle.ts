@@ -1,4 +1,3 @@
-
 export function drawRectangle(
   ctx: CanvasRenderingContext2D,
   x: number,

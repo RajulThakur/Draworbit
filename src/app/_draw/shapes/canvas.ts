@@ -1,4 +1,3 @@
-import {CanvasRenderingContext2D} from 'canvas';
 import {Shape} from './types';
 import {drawLine} from './line';
 import {drawArrow} from './line';
@@ -7,7 +6,14 @@ import {drawEllipse} from './ellipse';
 import {drawImage} from './image';
 import {drawText} from './text';
 import {drawDiamond} from './diamond';
+import {drawSelection} from './selection';
 import {drawSquare} from './square';
+
+let selectedShape: Shape | null = null;
+
+export function setSelectedShape(shape: Shape | null) {
+  selectedShape = shape;
+}
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;
@@ -22,11 +28,11 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
     case 'rectangle':
       drawRectangle(ctx, x, y, height, width);
       break;
-    case 'square':
-      drawSquare(ctx, x, y, height, width);
-      break;
     case 'circle':
       drawEllipse(ctx, x, y, width, height);
+      break;
+    case 'square':
+      drawSquare(ctx, x, y, width, height);
       break;
     case 'picture':
       drawImage(ctx, shape.data.src, x, y, width, height);
@@ -44,6 +50,9 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       console.warn(`Unsupported shape type: ${type}`);
       break;
   }
+
+  // Draw selection if this shape is selected
+  drawSelection(ctx, shape, shape === selectedShape);
 }
 
 export function clearAndRedrawCanvas(

@@ -52,7 +52,7 @@ function MainNav() {
     }
   };
   return (
-    <div className="fixed top-4 right-0 left-0 max-w-screen-sm mx-auto z-10 flex items-center justify-evenly space-x-2 rounded-xl bg-gray-100 px-6 py-1 dark:bg-slate-800">
+    <div className="fixed top-4 right-0 left-0 z-10 mx-auto flex max-w-screen-sm items-center justify-evenly space-x-2 rounded-xl bg-gray-100 px-6 py-1 dark:bg-slate-800">
       {options.map((option) => (
         <button
           onClick={
