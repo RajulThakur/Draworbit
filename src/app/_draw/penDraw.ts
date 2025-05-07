@@ -1,4 +1,8 @@
+'use client';
+import {useRef} from 'react';
 export function PenDraw(canvas: HTMLCanvasElement, strokeColor: string) {
+  const startX = useRef(0);
+  const startY = useRef(0);
   if (!canvas || !strokeColor) return;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
@@ -10,8 +14,6 @@ export function PenDraw(canvas: HTMLCanvasElement, strokeColor: string) {
 
   let isPainting = false;
   const lineWidth = 2;
-  let startX;
-  let startY;
   ctx.strokeStyle = strokeColor;
 
   const draw = (e: MouseEvent) => {
@@ -29,8 +31,8 @@ export function PenDraw(canvas: HTMLCanvasElement, strokeColor: string) {
 
   canvas.addEventListener('mousedown', (e) => {
     isPainting = true;
-    startX = e.clientX;
-    startY = e.clientY;
+    startX.current = e.clientX;
+    startY.current = e.clientY;
   });
 
   canvas.addEventListener('mouseup', () => {

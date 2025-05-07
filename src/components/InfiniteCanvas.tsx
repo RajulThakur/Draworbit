@@ -35,23 +35,23 @@ export default function InfiniteCanvas() {
     console.log(`worldX: ${x}, worldY: ${y}`);
     return {x, y};
   };
-  const worldToScreen = (
-    worldX: number,
-    worldY: number,
-    offsetX: number,
-    offsetY: number,
-    scale: number
-  ) => {
-    // Convert world coordinates to screen coordinates
-    const screenX = worldX * scale + offsetX;
-    const screenY = worldY * scale + offsetY;
-    console.log(`worldX: ${worldX}, worldY: ${worldY}`);
-    console.log(`offsetX: ${offsetX}, offsetY: ${offsetY}`);
-    console.log(`scale: ${scale}`);
-    console.log(`screenX: ${screenX}, screenY: ${screenY}`);
-    // Return the screen coordinates
-    return {x: (screenX - offsetX) / scale, y: (screenY - offsetY) / scale};
-  };
+  // const worldToScreen = (
+  //   worldX: number,
+  //   worldY: number,
+  //   offsetX: number,
+  //   offsetY: number,
+  //   scale: number
+  // ) => {
+  //   // Convert world coordinates to screen coordinates
+  //   const screenX = worldX * scale + offsetX;
+  //   const screenY = worldY * scale + offsetY;
+  //   console.log(`worldX: ${worldX}, worldY: ${worldY}`);
+  //   console.log(`offsetX: ${offsetX}, offsetY: ${offsetY}`);
+  //   console.log(`scale: ${scale}`);
+  //   console.log(`screenX: ${screenX}, screenY: ${screenY}`);
+  //   // Return the screen coordinates
+  //   return {x: (screenX - offsetX) / scale, y: (screenY - offsetY) / scale};
+  // };
 
   useEffect(() => {
     const height = window.innerHeight;

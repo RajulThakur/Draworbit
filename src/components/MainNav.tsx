@@ -1,21 +1,18 @@
 'use client';
-import {useCursor} from '@/context/cursorContext';
-import {useData} from '@/context/dataContext';
-import {NavOptions} from '@/Type/navbarType';
+import { useCursor } from '@/context/cursorContext';
+import { useData } from '@/context/dataContext';
+import { NavOptions } from '@/Type/navbarType';
 import {
   ArrowRight,
   Circle,
   Diamond,
-  Eraser,
   Hand,
-  Image,
-  LetterText,
   Pencil,
   RectangleHorizontal,
   Slash,
-  Square,
+  Square
 } from 'lucide-react';
-import {ChangeEvent, useRef} from 'react';
+import { ChangeEvent, useRef } from 'react';
 function MainNav() {
   const options: NavOptions[] = [
     {name: 'hand', icon: <Hand strokeWidth={1.69} />},
