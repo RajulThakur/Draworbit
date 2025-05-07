@@ -1,5 +1,3 @@
-import {CanvasRenderingContext2D} from 'canvas';
-
 export function drawDiamond(
   ctx: CanvasRenderingContext2D,
   x: number,

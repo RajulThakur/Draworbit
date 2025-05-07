@@ -1,4 +1,3 @@
-import {CanvasRenderingContext2D} from 'canvas';
 import {Shape} from './types';
 
 let shapes: Shape[] = [];

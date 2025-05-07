@@ -1,5 +1,3 @@
-import {CanvasRenderingContext2D} from 'canvas';
-
 export function drawImage(
   ctx: CanvasRenderingContext2D,
   src: string,

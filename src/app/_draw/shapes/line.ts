@@ -1,5 +1,3 @@
-import {CanvasRenderingContext2D} from 'canvas';
-
 export function drawLine(
   ctx: CanvasRenderingContext2D,
   x: number,
