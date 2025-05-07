@@ -6,17 +6,14 @@ import {drawEllipse} from './ellipse';
 import {drawImage} from './image';
 import {drawText} from './text';
 import {drawDiamond} from './diamond';
-import {drawSelection} from './selection';
+// import {drawSelection} from './selection';
 import {drawSquare} from './square';
-
-let selectedShape: Shape | null = null;
-
-export function setSelectedShape(shape: Shape | null) {
-  selectedShape = shape;
-}
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;
+
+  // Save the current context state
+  ctx.save();
 
   switch (type) {
     case 'line':
@@ -51,17 +48,31 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       break;
   }
 
-  // Draw selection if this shape is selected
-  drawSelection(ctx, shape, shape === selectedShape);
+  ctx.restore();
 }
 
-export function clearAndRedrawCanvas(
+export interface Transform {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+export function renderCanvas(
   canvas: HTMLCanvasElement,
   shapes: Shape[],
-  ctx: CanvasRenderingContext2D
-) {
-  if (!canvas || !ctx) return;
-
+  ctx: CanvasRenderingContext2D,
+  transform: Transform
+): number {
+  if (!canvas || !ctx) return 0;
+  const {x, y, scale} = transform;
+  // Clear the entire canvas
+  ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.setTransform(scale, 0, 0, scale, x, y);
+
   shapes.forEach((shape) => renderShape(ctx, shape));
+  ctx.restore();
+  return requestAnimationFrame(() => {
+    renderCanvas(canvas, shapes, ctx, transform);
+  });
 }

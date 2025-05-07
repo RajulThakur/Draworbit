@@ -26,9 +26,9 @@ function MainNav() {
     {name: 'line', icon: <Slash strokeWidth={1.7} />},
     {name: 'arrow', icon: <ArrowRight strokeWidth={1.69} />},
     {name: 'draw', icon: <Pencil strokeWidth={1.69} />},
-    {name: 'picture', icon: <Image strokeWidth={1.69} />},
-    {name: 'text', icon: <LetterText strokeWidth={1.69} />},
-    {name: 'eraser', icon: <Eraser strokeWidth={1.69} />},
+    // {name: 'picture', icon: <Image strokeWidth={1.69} />},
+    // {name: 'text', icon: <LetterText strokeWidth={1.69} />},
+    // {name: 'eraser', icon: <Eraser strokeWidth={1.69} />},
   ];
   const {setCursor, cursor} = useCursor();
   const {setData} = useData();
