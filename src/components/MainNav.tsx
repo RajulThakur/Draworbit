@@ -1,22 +1,20 @@
 'use client';
-import {useCursor} from '@/context/cursorContext';
-import {useData} from '@/context/dataContext';
-import {NavOptions} from '@/Type/navbarType';
+import { useCursor } from '@/context/cursorContext';
+import { useData } from '@/context/dataContext';
+import { NavOptions } from '@/Type/navbarType';
 import {
   ArrowRight,
   Circle,
   Diamond,
-  Eraser,
   Hand,
-  Image,
   LetterText,
   Pencil,
   RectangleHorizontal,
   Slash,
   Square,
-  Trash2,
+  Trash2
 } from 'lucide-react';
-import {ChangeEvent, useRef} from 'react';
+import { ChangeEvent, useRef } from 'react';
 function MainNav() {
   const iconStyle = 'size-4 md:size-5';
   const options: NavOptions[] = [
@@ -101,15 +99,15 @@ function MainNav() {
         />
       ),
     },
-    {
-      name: 'eraser',
-      icon: (
-        <Eraser
-          className={`${iconStyle}`}
-          strokeWidth={1.69}
-        />
-      ),
-    },
+    // {
+    //   name: 'eraser',
+    //   icon: (
+    //     <Eraser
+    //       className={`${iconStyle}`}
+    //       strokeWidth={1.69}
+    //     />
+    //   ),
+    // },
     {
       name: 'clear all',
       icon: (
