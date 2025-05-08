@@ -1,6 +1,11 @@
 'use client';
-import {renderCanvas} from '@/app/_draw/shapes/canvas';
-import {Shape} from '@/app/_draw/shapes/types';
+import {
+  appendShapes,
+  clearStorage,
+  getShapes,
+} from '@/app/utils/helper/storage';
+import {renderCanvas} from '@/app/utils/shapes/canvas';
+import {Shape} from '@/app/utils/shapes/types';
 import {useColor} from '@/context/colorContext';
 import {useCursor} from '@/context/cursorContext';
 import type {MouseEvent, TouchEvent} from 'react';
@@ -17,7 +22,7 @@ export default function Canvas() {
   const isDragging = useRef(false);
   const lastPos = useRef({x: 0, y: 0});
   const animationFrameRef = useRef<number>(0);
-  const ShapesRef = useRef<Shape[]>([]);
+  const ShapesRef = useRef<Shape[]>(getShapes() || []);
   const lastPinchDistance = useRef<number>(0);
 
   const screenToWorld = (
@@ -27,9 +32,6 @@ export default function Canvas() {
     offsetY: number,
     scale: number
   ) => {
-    console.log(
-      `screenX: ${screenX}, screenY: ${screenY} offsetX: ${offsetX}, offsetY: ${offsetY} scale: ${scale}`
-    );
     // Convert screen coordinates to world coordinates
     const x = (screenX - offsetX) / scale;
     const y = (screenY - offsetY) / scale;
@@ -72,6 +74,13 @@ export default function Canvas() {
     ctx.lineWidth = 2;
     ctx.strokeStyle = strokeColor;
 
+    //clearing canvas
+    if (cursor === 'clear all') {
+      ShapesRef.current = [];
+      setCursor('hand');
+      clearStorage();
+    }
+
     //rendering loop
     animationFrameRef.current = renderCanvas(
       canvas,
@@ -82,7 +91,7 @@ export default function Canvas() {
     return () => {
       cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [dim, strokeColor]);
+  }, [dim, strokeColor, cursor, setCursor]);
 
   const handleMouseDown = (e: MouseEvent<HTMLCanvasElement>) => {
     if (cursor !== 'hand') {
@@ -98,14 +107,18 @@ export default function Canvas() {
         offSetY,
         scale
       );
-      ShapesRef.current.push({
+      //Adding to local storage
+      const newShape = {
         x,
         y,
         width: 0,
         height: 0,
         type: cursor,
         data: {src: ''},
-      });
+        path: cursor === 'draw' ? [{x, y}] : undefined,
+      };
+      appendShapes([newShape]);
+      ShapesRef.current.push(newShape);
       lastPos.current = {
         x: e.clientX * dpr.current,
         y: e.clientY * dpr.current,
@@ -138,8 +151,12 @@ export default function Canvas() {
         scale
       );
       // Calculate dimensions from initial position
-      shape[len - 1].width = x - shape[len - 1].x;
-      shape[len - 1].height = y - shape[len - 1].y;
+      if (cursor === 'draw') {
+        shape[len - 1].path?.push({x, y});
+      } else {
+        shape[len - 1].width = x - shape[len - 1].x;
+        shape[len - 1].height = y - shape[len - 1].y;
+      }
     } else {
       // Update transform without DPR multiplication since transform is in screen coordinates
       transformRef.current.x += dx;

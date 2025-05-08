@@ -5,12 +5,14 @@ import {drawRectangle} from './rectangle';
 import {drawEllipse} from './ellipse';
 import {drawImage} from './image';
 import {drawText} from './text';
-import {drawDiamond} from './diamond';
 // import {drawSelection} from './selection';
 import {drawSquare} from './square';
+import {drawDiamond} from './diamond';
+import {PenDraw} from '../draw/penDraw';
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;
+  const path = shape?.path;
 
   // Save the current context state
   ctx.save();
@@ -39,6 +41,11 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       break;
     case 'diamond':
       drawDiamond(ctx, x, y, width, height);
+      break;
+    case 'draw':
+      if (path) {
+        PenDraw(ctx, x, y, path);
+      }
       break;
     case 'eraser':
       // Implement eraser functionality

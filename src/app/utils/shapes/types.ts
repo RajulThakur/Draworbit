@@ -6,9 +6,14 @@ export interface Shape {
   x: number;
   y: number;
   width: number;
-  path?: string;
+  path?: Path[];
   height: number;
   fontSize?: number;
   color?: string;
   data: Data;
+}
+
+export interface Path {
+  x: number;
+  y: number;
 }

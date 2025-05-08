@@ -1,0 +1,2 @@
+const STORE_KEY="SHAPE_STORE";
+export {STORE_KEY}
