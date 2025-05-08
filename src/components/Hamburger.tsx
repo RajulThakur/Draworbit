@@ -1,7 +1,7 @@
 'use client';
 import Button from '@/ui/Button';
-import { AlignJustify, FileDown, ShieldQuestion } from 'lucide-react';
-import { useState } from 'react';
+import {AlignJustify, FileDown, ShieldQuestion} from 'lucide-react';
+import {useState} from 'react';
 
 function Hamburger() {
   const hamBurgerMenu = [

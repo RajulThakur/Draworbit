@@ -140,7 +140,7 @@ function MainNav() {
     }
   };
   return (
-    <div className="fixed top-4 right-2 left-2 z-10 mx-auto grid w-auto max-w-100 grid-cols-6 items-center justify-between gap-x-0.5 gap-y-1 rounded-xl bg-gray-100 p-1 md:flex md:max-w-screen-sm md:p-1.5 dark:bg-slate-800">
+    <div className="fixed top-4 right-2 left-2 z-10 mx-auto grid w-auto max-w-100 grid-cols-6 items-center justify-between gap-x-0.5 gap-y-1 rounded-xl bg-gray-100 p-2 md:flex md:max-w-screen-sm md:p-1.5 dark:bg-slate-800">
       {options.map((option) => (
         <button
           onClick={

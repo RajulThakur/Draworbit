@@ -6,7 +6,7 @@ function Home() {
   return (
     <Link href="/app">
       <div className="dark:bg-background relative h-dvh w-dvw bg-slate-200">
-        <div className="absolute top-15 left-5 size-24">
+        <div className="absolute top-15 left-5 hidden size-24 md:block">
           <Image
             fill
             className="object-contain dark:invert"
@@ -14,7 +14,7 @@ function Home() {
             src={'/arrow/share.png'}
           />
         </div>
-        <div className="absolute top-15 right-5 size-24">
+        <div className="absolute right-5 bottom-5 hidden size-24 md:top-15 md:right-5 md:block">
           <Image
             fill
             className="object-contain dark:invert"
@@ -22,7 +22,15 @@ function Home() {
             src={'/arrow/menu.png'}
           />
         </div>
-        <div className="absolute bottom-15 left-15 size-24">
+        <div className="absolute right-2 bottom-12 md:hidden size-24 ">
+          <Image
+            fill
+            className="object-contain dark:invert"
+            alt="menu"
+            src={'/arrow/menu_rev.svg'}
+          />
+        </div>
+        <div className="absolute bottom-10 left-15 size-24 md:bottom-15">
           <Image
             fill
             className="object-contain dark:invert"
@@ -30,7 +38,7 @@ function Home() {
             src={'/arrow/zoom.png'}
           />
         </div>
-        <div className="absolute bottom-15 left-35 size-24">
+        <div className="absolute bottom-15 left-35 hidden size-24">
           <Image
             fill
             className="object-contain dark:invert"
@@ -38,7 +46,7 @@ function Home() {
             src={'/arrow/undo.png'}
           />
         </div>
-        <div className="absolute bottom-5 left-80 size-24">
+        <div className="absolute bottom-5 left-80 hidden size-24">
           <Image
             fill
             className="object-contain dark:invert"
@@ -46,7 +54,7 @@ function Home() {
             src={'/arrow/redo.png'}
           />
         </div>
-        <div className="absolute right-15 bottom-7 size-24">
+        <div className="absolute right-20 bottom-4 size-24 md:right-15 md:bottom-7">
           <Image
             fill
             className="object-contain dark:invert"
