@@ -13,9 +13,10 @@ function Button({
   onClick,
   className = '',
 }: ButtonProps) {
-  const baseStyles = 'px-4 py-2 rounded-md font-medium transition-all';
+  const baseStyles =
+    'rounded-md font-medium transition-all flex items-center justify-center';
   const primaryStyles =
-    'bg-purple-500 text-white hover:bg-purple-600 transtion-all dark:bg-slate-800 dark:hover:bg-slate-700';
+    'bg-purple-500 text-white hover:bg-purple-600 dark:bg-slate-800 dark:hover:bg-slate-700';
   const secondaryStyles =
     'bg-white text-purple-500 border border-purple-500 hover:bg-purple-100';
 
@@ -23,7 +24,7 @@ function Button({
 
   return (
     <button
-      className={`${baseStyles} ${styles} ${className}`}
+      className={`${baseStyles} ${styles} ${className} size-8 md:size-10 lg:size-12`}
       onClick={onClick}>
       {children}
     </button>

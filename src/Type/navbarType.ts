@@ -11,7 +11,8 @@ export type NavbarType =
   | 'text'
   | 'diamond'
   | 'eraser'
-  | 'square';
+  | 'square'
+  | 'clear all';
 export interface NavOptions {
   name: NavbarType;
   icon: ReactNode;

@@ -1,11 +1,12 @@
-'use client'
+'use client';
+import Button from '@/ui/Button';
 import {ShieldQuestion} from 'lucide-react';
 
 function Help() {
   return (
-    <div className="fixed right-4 bottom-4 rounded-xl bg-purple-300 p-3 transition-all hover:bg-purple-200 dark:bg-slate-800 dark:hover:bg-slate-700">
-      <ShieldQuestion />
-    </div>
+    <Button className="fixed right-14 md:right-4 bottom-4">
+      <ShieldQuestion className="size-4 md:size-5 lg:size-6" />
+    </Button>
   );
 }
 

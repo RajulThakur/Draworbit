@@ -1,11 +1,12 @@
-'use client'
+'use client';
+import Button from '@/ui/Button';
 import {Share} from 'lucide-react';
 
 function ShareBtn() {
   return (
-    <button className="fixed top-4 left-4 rounded-md border-none bg-blue-200 p-2 dark:bg-slate-800 dark:hover:bg-slate-700">
-      <Share />
-    </button>
+    <Button className="top-4 left-4 hidden md:flex md:fixed">
+      <Share className="size-4 md:size-5 lg:size-6" />
+    </Button>
   );
 }
 
