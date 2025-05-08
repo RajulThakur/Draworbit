@@ -28,7 +28,9 @@ function Zoom_Undo() {
           <Minus className="size-3.5 md:size-4 lg:size-6" />
         </span>
       </div>
-      <div className="flex h-full gap-1 md:gap-2">
+
+      {/* Todo */}
+      <div className="hidden h-full gap-1 md:gap-2">
         <Button className="p-1.5 md:p-2 lg:p-3">
           <Undo className="size-3.5 md:size-4 lg:size-6" />
         </Button>
