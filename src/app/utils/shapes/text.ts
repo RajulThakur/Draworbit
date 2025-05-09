@@ -4,6 +4,8 @@ export function drawText(
   x: number,
   y: number
 ) {
-  ctx.font = '50px Arial';
+  ctx.font = '16px Arial';
+  ctx.fillStyle = ctx.strokeStyle; // Use the same color as other shapes
+  ctx.textBaseline = 'top';
   ctx.fillText(text, x, y);
 }

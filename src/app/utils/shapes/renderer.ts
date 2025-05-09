@@ -8,7 +8,7 @@ import {drawText} from './text';
 // import {drawSelection} from './selection';
 import {drawSquare} from './square';
 import {drawDiamond} from './diamond';
-import {PenDraw} from '../draw/penDraw';
+import {PenDraw} from './penDraw';
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;

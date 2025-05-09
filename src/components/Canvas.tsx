@@ -4,12 +4,12 @@ import {
   clearStorage,
   getShapes,
 } from '@/app/utils/helper/storage';
-import {renderCanvas} from '@/app/utils/shapes/canvas';
+import {renderCanvas} from '@/app/utils/shapes/renderer';
 import {Shape} from '@/app/utils/shapes/types';
 import {useColor} from '@/context/colorContext';
 import {useCursor} from '@/context/cursorContext';
 import type {MouseEvent, TouchEvent} from 'react';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
@@ -24,6 +24,12 @@ export default function Canvas() {
   const animationFrameRef = useRef<number>(0);
   const ShapesRef = useRef<Shape[]>(getShapes() || []);
   const lastPinchDistance = useRef<number>(0);
+  const [textInput, setTextInput] = useState({
+    x: 0,
+    y: 0,
+    show: false,
+    value: '',
+  });
 
   const screenToWorld = (
     screenX: number,
@@ -79,7 +85,6 @@ export default function Canvas() {
       setCursor('hand');
       clearStorage();
     }
-    document.body.addEventListener('keypress', handleKeyDown);
 
     //rendering loop
     animationFrameRef.current = renderCanvas(
@@ -97,7 +102,6 @@ export default function Canvas() {
     if (cursor !== 'hand') {
       isDrawing.current = true;
       const {x: offSetX, y: offSetY, scale} = transformRef.current;
-      // Adjust mouse coordinates by DPR
       const adjustedX = e.clientX * dpr.current;
       const adjustedY = e.clientY * dpr.current;
       const {x, y} = screenToWorld(
@@ -107,6 +111,7 @@ export default function Canvas() {
         offSetY,
         scale
       );
+
       //Adding to local storage
       const newShape = {
         x,
@@ -164,7 +169,12 @@ export default function Canvas() {
     }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: MouseEvent<HTMLCanvasElement>) => {
+    if (cursor === 'text') {
+      setTextInput({x: e.clientX, y: e.clientY, show: true, value: ''});
+      console.log('Cursor -> Text up');
+      return;
+    }
     if (isDrawing.current) {
       setCursor('hand');
       isDrawing.current = false;
@@ -174,7 +184,7 @@ export default function Canvas() {
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     // Get mouse position on screen
     const mouseX = e.clientX;
@@ -290,32 +300,80 @@ export default function Canvas() {
     handleMouseUp();
   };
 
-  const handleKeyDown = useCallback((e: globalThis.KeyboardEvent) => {
-    if (cursor !== 'text') return;
-    console.log(e.target);
-  }, [cursor]);
+  const handleTextInputBlur = () => {
+    if (textInput.value.trim()) {
+      const {x: offSetX, y: offSetY, scale} = transformRef.current;
+      const {x, y} = screenToWorld(
+        textInput.x * dpr.current,
+        textInput.y * dpr.current,
+        offSetX,
+        offSetY,
+        scale
+      );
+
+      const newShape: Shape = {
+        x,
+        y,
+        width: 0,
+        height: 0,
+        type: 'text' as Shape['type'], // Ensure 'text' matches the expected type
+        text: textInput.value,
+        data: {src: ''},
+      };
+      appendShapes([newShape]);
+      ShapesRef.current.push(newShape);
+    }
+    setTextInput({x: 0, y: 0, show: false, value: ''});
+    setCursor('hand');
+  };
 
   return (
-    <canvas
-      id="canvas"
-      ref={c}
-      style={{
-        width: `${dim.width}px`,
-        height: `${dim.height}px`,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 0,
-        touchAction: 'none', // Prevent default touch actions
-      }}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      className="dark:bg-background bg-white "
-    />
+    <>
+      <canvas
+        id="canvas"
+        ref={c}
+        style={{
+          width: `${dim.width}px`,
+          height: `${dim.height}px`,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 0,
+          touchAction: 'none', // Prevent default touch actions
+        }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onWheel={handleWheel}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="dark:bg-background bg-white"
+      />
+      {textInput.show && (
+        <input
+          type="text"
+          autoFocus
+          value={textInput.value}
+          onChange={(e) =>
+            setTextInput((prev) => ({...prev, value: e.target.value}))
+          }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.currentTarget.blur();
+            }
+          }}
+          className="fixed z-10 rounded-md border border-gray-300 bg-white px-4 py-6 text-xl shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-white"
+          style={{
+            height: `${80 / transformRef.current.scale}px`,
+            left: `${(textInput.x - transformRef.current.x) / transformRef.current.scale}px`,
+            top: `${(textInput.y - transformRef.current.y) / transformRef.current.scale}px`,
+            transform: `scale(${1 / transformRef.current.scale})`,
+            transformOrigin: 'top left',
+          }}
+          onBlur={handleTextInputBlur}
+        />
+      )}
+    </>
   );
 }
