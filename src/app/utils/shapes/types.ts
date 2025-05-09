@@ -8,7 +8,7 @@ export interface Shape {
   width: number;
   path?: Path[];
   height: number;
-  fontSize?: number;
+  text?: string;
   color?: string;
   data: Data;
 }

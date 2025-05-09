@@ -14,18 +14,18 @@ function Hamburger() {
     <>
       {/* Hamburger Button */}
       <Button
-        className="fixed right-4 bottom-4 md:top-4"
+        className="fixed right-4 bottom-4"
         onClick={() => setIsExpanded(!isExpanded)}>
-        <AlignJustify className="size-4 md:size-5 lg:size-6" />
+        <AlignJustify className="stroke-foreground size-4 md:size-5 lg:size-6 dark:stroke-white" />
       </Button>
 
       {/* Menu */}
       {isExpanded && (
-        <div className="fixed right-4 bottom-14 flex max-w-32 flex-col space-y-1 rounded-md bg-white p-1.5 shadow-lg transition-all md:top-16 md:w-54 md:p-2 dark:bg-slate-800">
+        <div className="fixed right-6 flex max-w-34 bottom-20 flex-col space-y-1 rounded-md bg-slate-100 p-1.5 shadow-lg transition-all md:w-54 md:p-2 dark:bg-slate-800">
           {hamBurgerMenu.map((menu, index) => (
             <div
               key={index}
-              className="flex cursor-pointer items-center space-x-2 rounded-md px-2 py-1.5 hover:bg-gray-100 md:px-3 md:py-2 dark:hover:bg-slate-700">
+              className="flex cursor-pointer items-center space-x-2 rounded-md px-2 py-1.5 hover:bg-purple-100 md:px-3 md:py-2 dark:hover:bg-slate-700">
               <span className="dark:text-foreground size-4 text-purple-500 md:size-5">
                 {menu.icon}
               </span>

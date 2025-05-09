@@ -9,7 +9,7 @@ import {Shape} from '@/app/utils/shapes/types';
 import {useColor} from '@/context/colorContext';
 import {useCursor} from '@/context/cursorContext';
 import type {MouseEvent, TouchEvent} from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
@@ -35,7 +35,6 @@ export default function Canvas() {
     // Convert screen coordinates to world coordinates
     const x = (screenX - offsetX) / scale;
     const y = (screenY - offsetY) / scale;
-    console.log(`worldX: ${x}, worldY: ${y}`);
     return {x, y};
   };
 
@@ -80,6 +79,7 @@ export default function Canvas() {
       setCursor('hand');
       clearStorage();
     }
+    document.body.addEventListener('keypress', handleKeyDown);
 
     //rendering loop
     animationFrameRef.current = renderCanvas(
@@ -290,6 +290,11 @@ export default function Canvas() {
     handleMouseUp();
   };
 
+  const handleKeyDown = useCallback((e: globalThis.KeyboardEvent) => {
+    if (cursor !== 'text') return;
+    console.log(e.target);
+  }, [cursor]);
+
   return (
     <canvas
       id="canvas"
@@ -310,7 +315,7 @@ export default function Canvas() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="dark:bg-background bg-slate-300"
+      className="dark:bg-background bg-white "
     />
   );
 }

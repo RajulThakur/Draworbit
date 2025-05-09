@@ -16,7 +16,7 @@ function Button({
   const baseStyles =
     'rounded-md font-medium transition-all flex items-center justify-center';
   const primaryStyles =
-    'bg-purple-500 text-white hover:bg-purple-600 dark:bg-slate-800 dark:hover:bg-slate-700';
+    'bg-purple-300 text-white hover:bg-purple-400 dark:bg-slate-800 dark:hover:bg-slate-700';
   const secondaryStyles =
     'bg-white text-purple-500 border border-purple-500 hover:bg-purple-100';
 

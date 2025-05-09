@@ -13,6 +13,7 @@ import {PenDraw} from '../draw/penDraw';
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width} = shape;
   const path = shape?.path;
+  const text = shape?.text;
 
   // Save the current context state
   ctx.save();
@@ -37,7 +38,9 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       drawImage(ctx, shape.data.src, x, y, width, height);
       break;
     case 'text':
-      drawText(ctx, x, y, 20, ctx.strokeStyle as string);
+      if (text) {
+        drawText(ctx, text, x, y);
+      }
       break;
     case 'diamond':
       drawDiamond(ctx, x, y, width, height);

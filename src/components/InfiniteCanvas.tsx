@@ -26,13 +26,9 @@ export default function InfiniteCanvas() {
     offsetY: number,
     scale: number
   ) => {
-    console.log(`screenX: ${screenX}, screenY: ${screenY}`);
-    console.log(`offsetX: ${offsetX}, offsetY: ${offsetY}`);
-    console.log(`scale: ${scale}`);
     // Convert screen coordinates to world coordinates
     const x = (screenX - offsetX) / scale;
     const y = (screenY - offsetY) / scale;
-    console.log(`worldX: ${x}, worldY: ${y}`);
     return {x, y};
   };
   // const worldToScreen = (
