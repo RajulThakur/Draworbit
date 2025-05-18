@@ -3,7 +3,8 @@ export function drawDiamond(
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  isSelected: boolean = false
 ) {
   if (!ctx) return;
 
@@ -22,6 +23,12 @@ export function drawDiamond(
   ctx.beginPath();
   ctx.lineWidth = 2;
 
+  if (isSelected) {
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 2;
+    ctx.rect(x - 4, y - 4, width + 4, height + 4);
+    ctx.stroke();
+  }
   // Move to the first vertex
   ctx.moveTo(vertices[0].x, vertices[0].y);
 

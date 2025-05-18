@@ -3,7 +3,8 @@ export function drawLine(
   x: number,
   y: number,
   height: number,
-  width: number
+  width: number,
+  isSelected: boolean = false
 ) {
   if (!ctx) return;
 
@@ -11,6 +12,13 @@ export function drawLine(
   const startY = Math.round(y);
   const endX = Math.round(x + width);
   const endY = Math.round(y + height);
+
+  if (isSelected) {
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 2;
+    ctx.rect(startX - 2, startY - 2, width + 4, height + 4);
+    ctx.stroke();
+  }
 
   ctx.beginPath();
   ctx.lineWidth = 2;
@@ -24,7 +32,8 @@ export function drawArrow(
   x: number,
   y: number,
   height: number,
-  width: number
+  width: number,
+  isSelected: boolean = false
 ) {
   if (!ctx) return;
 
@@ -39,6 +48,12 @@ export function drawArrow(
   const endY = Math.round(y + height);
 
   ctx.beginPath();
+  if (isSelected) {
+    ctx.strokeStyle = 'blue';
+    ctx.lineWidth = 2;
+    ctx.rect(startX - 2, startY - 2, width + 4, height + 4);
+    ctx.stroke();
+  }
   ctx.lineWidth = 2;
   ctx.moveTo(startX, startY);
   ctx.lineTo(endX, endY);

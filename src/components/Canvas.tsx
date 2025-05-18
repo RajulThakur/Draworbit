@@ -3,13 +3,17 @@ import {
   appendShapes,
   clearStorage,
   getShapes,
+  updateShapes,
 } from '@/app/utils/helper/storage';
-import {renderCanvas} from '@/app/utils/shapes/renderer';
-import {Shape} from '@/app/utils/shapes/types';
-import {useColor} from '@/context/colorContext';
-import {useCursor} from '@/context/cursorContext';
-import type {MouseEvent, TouchEvent} from 'react';
-import {useEffect, useRef, useState} from 'react';
+import { isPointInShape, renderCanvas } from '@/app/utils/shapes/renderer';
+import {
+  screenToWorld
+} from '@/app/utils/shapes/transform/canvasHelper';
+import { Shape } from '@/app/utils/shapes/types';
+import { useColor } from '@/context/colorContext';
+import { useCursor } from '@/context/cursorContext';
+import type { MouseEvent, TouchEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
@@ -24,25 +28,13 @@ export default function Canvas() {
   const animationFrameRef = useRef<number>(0);
   const ShapesRef = useRef<Shape[]>(getShapes() || []);
   const lastPinchDistance = useRef<number>(0);
+  const selectedShape = useRef<Shape | null>(null);
   const [textInput, setTextInput] = useState({
     x: 0,
     y: 0,
     show: false,
     value: '',
   });
-
-  const screenToWorld = (
-    screenX: number,
-    screenY: number,
-    offsetX: number,
-    offsetY: number,
-    scale: number
-  ) => {
-    // Convert screen coordinates to world coordinates
-    const x = (screenX - offsetX) / scale;
-    const y = (screenY - offsetY) / scale;
-    return {x, y};
-  };
 
   useEffect(() => {
     const height = window.innerHeight;
@@ -114,15 +106,16 @@ export default function Canvas() {
 
       //Adding to local storage
       const newShape = {
+        id: crypto.randomUUID(),
         x,
         y,
+        isSelected: false,
         width: 0,
         height: 0,
         type: cursor,
         data: {src: ''},
         path: cursor === 'draw' ? [{x, y}] : undefined,
       };
-      appendShapes([newShape]);
       ShapesRef.current.push(newShape);
       lastPos.current = {
         x: e.clientX * dpr.current,
@@ -138,7 +131,10 @@ export default function Canvas() {
   };
 
   const handleMouseMove = (e: MouseEvent<HTMLCanvasElement>) => {
+    
     if (!isDragging.current && !isDrawing.current) return;
+
+    // ... rest of your existing handleMouseMove code ...
     const dx = e.clientX * dpr.current - lastPos.current.x;
     const dy = e.clientY * dpr.current - lastPos.current.y;
     lastPos.current = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
@@ -172,10 +168,14 @@ export default function Canvas() {
   const handleMouseUp = (e: MouseEvent<HTMLCanvasElement>) => {
     if (cursor === 'text') {
       setTextInput({x: e.clientX, y: e.clientY, show: true, value: ''});
-      console.log('Cursor -> Text up');
       return;
     }
     if (isDrawing.current) {
+      //Updating position in local storage
+      const shapes = ShapesRef.current;
+      updateShapes(shapes);
+
+      //resetting hand
       setCursor('hand');
       isDrawing.current = false;
     } else {
@@ -312,8 +312,10 @@ export default function Canvas() {
       );
 
       const newShape: Shape = {
+        id: crypto.randomUUID(),
         x,
         y,
+        isSelected: false,
         width: 0,
         height: 0,
         type: 'text' as Shape['type'], // Ensure 'text' matches the expected type
@@ -326,6 +328,28 @@ export default function Canvas() {
     setTextInput({x: 0, y: 0, show: false, value: ''});
     setCursor('hand');
   };
+  function handleClick(e: MouseEvent<HTMLCanvasElement>) {
+    const point = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
+    const updatedPoints = screenToWorld(
+      point.x,
+      point.y,
+      transformRef.current.x,
+      transformRef.current.y,
+      transformRef.current.scale
+    );
+    ShapesRef.current.forEach((shape) => {
+      const isPointing = isPointInShape(updatedPoints, shape);
+      if (shape.isSelected) {
+        shape.isSelected = false;
+        selectedShape.current = null;
+      }
+
+      if (isPointing) {
+        shape.isSelected = !shape.isSelected;
+        selectedShape.current = shape;
+      }
+    });
+  }
 
   return (
     <>
@@ -341,6 +365,7 @@ export default function Canvas() {
           zIndex: 0,
           touchAction: 'none', // Prevent default touch actions
         }}
+        onClick={handleClick}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -365,7 +390,7 @@ export default function Canvas() {
           }}
           className="fixed z-10 rounded-md border border-gray-300 bg-white px-4 py-6 text-xl shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-white"
           style={{
-            height: `${80 / transformRef.current.scale}px`,
+            height: `${40 / transformRef.current.scale}px`,
             left: `${(textInput.x - transformRef.current.x) / transformRef.current.scale}px`,
             top: `${(textInput.y - transformRef.current.y) / transformRef.current.scale}px`,
             transform: `scale(${1 / transformRef.current.scale})`,

@@ -5,7 +5,7 @@ import Link from 'next/link';
 function Home() {
   return (
     <Link href="/app">
-      <div className="dark:bg-background relative h-dvh w-dvw bg-slate-200">
+      <div className="dark:bg-background relative h-dvh w-dvw bg-white">
         <div className="absolute top-15 left-5 hidden size-24 md:block">
           <Image
             fill
