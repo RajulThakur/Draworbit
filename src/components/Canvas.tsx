@@ -5,15 +5,13 @@ import {
   getShapes,
   updateShapes,
 } from '@/app/utils/helper/storage';
-import { isPointInShape, renderCanvas } from '@/app/utils/shapes/renderer';
-import {
-  screenToWorld
-} from '@/app/utils/shapes/transform/canvasHelper';
-import { Shape } from '@/app/utils/shapes/types';
-import { useColor } from '@/context/colorContext';
-import { useCursor } from '@/context/cursorContext';
-import type { MouseEvent, TouchEvent } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import {isPointInShape, renderCanvas} from '@/app/utils/shapes/renderer';
+import {screenToWorld} from '@/app/utils/shapes/transform/canvasHelper';
+import {Shape} from '@/app/utils/shapes/types';
+import {useColor} from '@/context/colorContext';
+import {useCursor} from '@/context/cursorContext';
+import type {MouseEvent, TouchEvent} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
@@ -131,7 +129,6 @@ export default function Canvas() {
   };
 
   const handleMouseMove = (e: MouseEvent<HTMLCanvasElement>) => {
-    
     if (!isDragging.current && !isDrawing.current) return;
 
     // ... rest of your existing handleMouseMove code ...
@@ -297,7 +294,8 @@ export default function Canvas() {
   const handleTouchEnd = (e: TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     lastPinchDistance.current = 0;
-    handleMouseUp();
+    const mouseEvent = new MouseEvent('mouseup', {clientX: 0, clientY: 0});
+    handleMouseUp(mouseEvent as unknown as MouseEvent<HTMLCanvasElement>);
   };
 
   const handleTextInputBlur = () => {
