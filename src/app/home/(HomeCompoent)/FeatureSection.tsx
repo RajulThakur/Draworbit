@@ -10,7 +10,7 @@ const features = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
+        className="size-6 text-white">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -38,7 +38,7 @@ const features = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
+        className="size-6 text-white">
         <rect
           x="4"
           y="4"
@@ -60,7 +60,7 @@ const features = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
+        className="size-6 text-white">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -80,7 +80,7 @@ const features = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
+        className="size-6 text-white">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -89,102 +89,38 @@ const features = [
       </svg>
     ),
   },
-  {
-    name: 'Undo, Redo & History',
-    description:
-      'Never lose your progress. Use undo, redo, and view your drawing history to keep your creative flow uninterrupted.',
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 19V5m7 7H5"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: 'Responsive & Accessible',
-    description:
-      'Enjoy a smooth experience on any device. DrawOrbit is fully responsive and accessible, supporting both mouse and touch input.',
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="h-8 w-8 text-indigo-600">
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M8 12h8"
-        />
-      </svg>
-    ),
-  },
 ];
 
 export default function FeatureSection() {
   return (
-    <section
-      className="relative py-24 sm:py-32"
-      id="features">
-      <div className="mx-auto flex flex-col items-center px-2 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base leading-7 font-semibold text-indigo-600">
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:text-center">
+          <h2 className="text-base/7 font-semibold text-indigo-600">
             Everything you need
           </h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
             No server? No problem.
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg/8 text-gray-600">
             DrawOrbit is a powerful, serverless drawing and collaboration
             platform. Create, annotate, and share your ideas instantly—no setup
             required.
           </p>
         </div>
-        {/* Centered Big Image with Blur at Bottom */}
-        <div className="relative mt-16 flex w-full justify-center">
-          <img
-            src="/assets/view.png"
-            alt="App screenshot"
-            className="w-full rounded-xl shadow-xl ring-1 ring-gray-400/10"
-            style={{objectFit: 'cover'}}
-          />
-          {/* Blur effect at the bottom of the image */}
-          <div
-            className="pointer-events-none absolute right-0 bottom-0 left-0 h-24 rounded-b-xl"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 80%, #fff 100%)',
-              filter: 'blur(8px)',
-            }}
-          />
-        </div>
-        {/* Features Grid */}
-        <div className="mt-20 w-full">
-          <dl className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
             {features.map((feature) => (
               <div
                 key={feature.name}
-                className="relative flex flex-col items-center px-4 text-center">
-                <dt className="mb-2 flex items-center justify-center text-lg leading-7 font-semibold text-gray-900">
-                  <span className="mr-2">{feature.icon}</span>
+                className="relative pl-16">
+                <dt className="text-base/7 font-semibold text-gray-900">
+                  <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                    {feature.icon}
+                  </div>
                   {feature.name}
                 </dt>
-                <dd className="text-base leading-7 text-gray-600">
+                <dd className="mt-2 text-base/7 text-gray-600">
                   {feature.description}
                 </dd>
               </div>
@@ -192,6 +128,6 @@ export default function FeatureSection() {
           </dl>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
