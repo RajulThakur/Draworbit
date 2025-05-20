@@ -15,7 +15,6 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const path = shape?.path;
   const text = shape?.text;
 
-
   // Save the current context state
   ctx.save();
 

@@ -1,7 +1,7 @@
 'use client';
-import { useCursor } from '@/context/cursorContext';
-import { useData } from '@/context/dataContext';
-import { NavOptions } from '@/Type/navbarType';
+import {useCursor} from '@/context/cursorContext';
+import {useData} from '@/context/dataContext';
+import {NavOptions} from '@/Type/navbarType';
 import {
   ArrowRight,
   Circle,
@@ -12,9 +12,11 @@ import {
   RectangleHorizontal,
   Slash,
   Square,
-  Trash2
+  Trash2,
 } from 'lucide-react';
-import { ChangeEvent, useRef } from 'react';
+import {ChangeEvent, useRef} from 'react';
+import Logo from './Logo';
+
 function MainNav() {
   const iconStyle = 'size-4 md:size-5';
   const options: NavOptions[] = [
@@ -134,11 +136,14 @@ function MainNav() {
       // Create URL for preview
       const imageUrl = URL.createObjectURL(file);
       setData({src: imageUrl});
-
     }
   };
   return (
     <div className="fixed top-4 right-2 left-2 z-10 mx-auto grid w-auto max-w-100 grid-cols-6 items-center justify-between gap-x-0.5 gap-y-1 rounded-xl bg-slate-100 p-2 md:flex md:max-w-screen-sm md:p-1.5 dark:bg-slate-800">
+      <Logo
+        isDarkMode={false}
+        showText={true}
+      />
       {options.map((option) => (
         <button
           onClick={
@@ -147,7 +152,7 @@ function MainNav() {
               : () => setCursor(option.name)
           }
           key={option.name}
-          className={`flex  w-full flex-col items-center justify-center gap-0.5 rounded-md p-0.5 hover:bg-blue-100 md:size-12 dark:hover:bg-slate-700 ${
+          className={`flex w-full flex-col items-center justify-center gap-0.5 rounded-md p-0.5 hover:bg-blue-100 md:size-12 dark:hover:bg-slate-700 ${
             option.name === cursor ? 'bg-blue-200 dark:bg-slate-700' : ''
           }`}>
           {option.icon}

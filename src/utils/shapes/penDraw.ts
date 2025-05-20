@@ -1,4 +1,4 @@
-import {Path} from '../shapes/types';
+import {Path} from './types';
 
 export function PenDraw(
   ctx: CanvasRenderingContext2D,
