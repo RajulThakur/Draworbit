@@ -1,4 +1,4 @@
-import drawSelectedHelper from './transform/selectedHelper';
+import { drawSelectedHelper } from "./transform/selectionHelper";
 
 export function drawDiamond(
   ctx: CanvasRenderingContext2D,
