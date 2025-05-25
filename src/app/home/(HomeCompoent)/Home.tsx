@@ -35,10 +35,10 @@ const Supercharged = () => {
           <p>Oraganise the</p>
         </div>
       </div>
-      <h2 className="items-center text-center text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl md:text-8xl">
+      <h2 className="items-center text-center text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl md:text-8xl dark:text-foreground">
         Your Workflow
         <br />
-        <span className="from-accent-600 to-accent-0 animate-charging bg-gradient-to-r text-[#9089fc]">
+        <span className="from-accent-600 to-accent-0 animate-charging bg-gradient-to-r text-[#9089fc] dark:text-[#a29dff]">
           Supercharged
         </span>
       </h2>
@@ -55,7 +55,7 @@ export default function Home() {
       <Supercharged />
       <Demo />
       <div className="relative">
-        <div className="from-accent-50/30 absolute inset-0 bg-gradient-to-b to-white"></div>
+        <div className="from-accent-50/30 absolute inset-0 bg-gradient-to-b to-white dark:bg-none "></div>
         <Footer />
       </div>
     </div>

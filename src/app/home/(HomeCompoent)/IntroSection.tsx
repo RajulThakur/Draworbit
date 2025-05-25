@@ -2,7 +2,7 @@ import Logo from '@/components/Logo';
 
 function IntroSection() {
   return (
-    <div className="flex h-dvh w-dvw snap-start snap-always bg-white">
+    <div className="flex h-dvh w-dvw snap-start snap-always bg-white dark:bg-background">
       <div className="relative isolate flex w-full items-center justify-center px-6 pt-14 lg:px-8">
         <div
           aria-hidden="true"
@@ -17,7 +17,7 @@ function IntroSection() {
         </div>
 
         <div className="mx-auto max-w-2xl py-32 text-center sm:py-48 lg:py-56">
-          <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-foreground sm:text-6xl">
             Where Ideas Take Shape
             <Logo
               showLogo={false}
@@ -25,9 +25,8 @@ function IntroSection() {
               className="size-14 text-6xl inline"
             />
           </h1>
-          <p className="mt-6 text-lg text-gray-600 sm:text-xl">
-            DrawOrbit is your all-in-one digital whiteboard. Sketch, share, and
-            collaborate in real-time anytime, anywhere.
+          <p className="mt-6 text-lg text-gray-600 sm:text-xl dark:text-gray-400">
+            DrawOrbit is your all-in-one digital whiteboard. Sketch, share anywhere.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <a
@@ -37,7 +36,7 @@ function IntroSection() {
             </a>
             <a
               href="#features"
-              className="text-sm font-semibold text-gray-900">
+              className="text-sm font-semibold text-gray-900 dark:text-gray-400">
               Discover Features
             </a>
           </div>

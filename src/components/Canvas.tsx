@@ -2,10 +2,15 @@
 
 import {useColor} from '@/context/colorContext';
 import {useCursor} from '@/context/cursorContext';
-import { appendShapes, clearStorage, getShapes, updateShapes } from '@/utils/helper/storage';
-import { isPointInShape, renderCanvas } from '@/utils/shapes/renderer';
-import { screenToWorld } from '@/utils/shapes/transform/canvasHelper';
-import { Shape } from '@/utils/shapes/types';
+import {
+  appendShapes,
+  clearStorage,
+  getShapes,
+  updateShapes,
+} from '@/utils/helper/storage';
+import {isPointInShape, renderCanvas} from '@/components/shapes/renderer';
+import {screenToWorld} from '@/components/shapes/transform/canvasHelper';
+import {Shape} from '@/components/shapes/types';
 import type {MouseEvent, TouchEvent} from 'react';
 import {useEffect, useRef, useState} from 'react';
 

@@ -93,16 +93,16 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="bg-white dark:bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base/7 font-semibold text-indigo-600">
+          <h2 className="text-base/7 font-semibold text-indigo-600 dark:text-indigo-100">
             Everything you need
           </h2>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance">
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 dark:text-slate-50 sm:text-5xl lg:text-balance">
             No server? No problem.
           </p>
-          <p className="mt-6 text-lg/8 text-gray-600">
+          <p className="mt-6 text-lg/8 text-gray-600 dark:text-gray-400">
             DrawOrbit is a powerful, serverless drawing and collaboration
             platform. Create, annotate, and share your ideas instantly—no setup
             required.
@@ -114,13 +114,13 @@ export default function FeatureSection() {
               <div
                 key={feature.name}
                 className="relative pl-16">
-                <dt className="text-base/7 font-semibold text-gray-900">
-                  <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                <dt className="text-base/7 font-semibold text-gray-900 dark:text-indigo-100">
+                  <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600 ">
                     {feature.icon}
                   </div>
                   {feature.name}
                 </dt>
-                <dd className="mt-2 text-base/7 text-gray-600">
+                <dd className="mt-2 text-base/7 text-gray-600 dark:text-gray-400">
                   {feature.description}
                 </dd>
               </div>

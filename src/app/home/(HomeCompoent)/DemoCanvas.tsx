@@ -73,15 +73,15 @@ export default function DemoCanvas() {
           );
           gradient.addColorStop(
             0,
-            `rgba(79, 70, 229, ${trailRef.current[i].alpha})`
+            `rgba(99, 102, 241, ${trailRef.current[i].alpha})`
           );
           gradient.addColorStop(
             1,
-            `rgba(79, 70, 229, ${trailRef.current[i + 1].alpha})`
+            `rgba(99, 102, 241, ${trailRef.current[i + 1].alpha})`
           );
 
           ctx.strokeStyle = gradient;
-          ctx.lineWidth = 2.5;
+          ctx.lineWidth = 2;
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
 
@@ -104,8 +104,11 @@ export default function DemoCanvas() {
           lastPoint.x,
           lastPoint.y
         );
-        gradient.addColorStop(0, `rgba(79, 70, 229, ${secondLastPoint.alpha})`);
-        gradient.addColorStop(1, `rgba(79, 70, 229, ${lastPoint.alpha})`);
+        gradient.addColorStop(
+          0,
+          `rgba(99, 102, 241, ${secondLastPoint.alpha})`
+        );
+        gradient.addColorStop(1, `rgba(99, 102, 241, ${lastPoint.alpha})`);
 
         ctx.strokeStyle = gradient;
         ctx.lineTo(lastPoint.x, lastPoint.y);
@@ -140,7 +143,7 @@ export default function DemoCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="h-full w-full cursor-crosshair rounded-xl bg-white"
+      className="h-full w-full cursor-crosshair rounded-xl bg-white dark:bg-white"
     />
   );
 }
