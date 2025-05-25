@@ -1,3 +1,5 @@
+import drawSelectedHelper from './transform/selectedHelper';
+
 export function drawRectangle(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -14,12 +16,9 @@ export function drawRectangle(
   const alignedWidth = Math.round(width);
   const alignedHeight = Math.round(height);
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(x - 4, y - 4, width + 4, height + 4);
-    ctx.stroke();
+    drawSelectedHelper(ctx, alignedX, alignedY, alignedWidth, alignedHeight);
   }
-
+  ctx.beginPath();
   ctx.lineWidth = 2;
   ctx.rect(alignedX, alignedY, alignedWidth, alignedHeight);
   ctx.stroke();

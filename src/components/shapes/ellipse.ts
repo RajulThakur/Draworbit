@@ -1,3 +1,5 @@
+import drawSelectedHelper from './transform/selectedHelper';
+
 export function drawEllipse(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -15,11 +17,15 @@ export function drawEllipse(
 
   ctx.beginPath();
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(x - 4, y - 4, radiusX * 2 + 4, radiusY * 2 + 4);
-    ctx.stroke();
+    drawSelectedHelper(
+      ctx,
+      centerX - radiusX,
+      centerY - radiusY,
+      radiusX * 2,
+      radiusY * 2
+    );
   }
+  ctx.beginPath();
   ctx.lineWidth = 2;
   ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
   ctx.stroke();

@@ -1,3 +1,5 @@
+import drawSelectedHelper from './transform/selectedHelper';
+
 export function drawDiamond(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -24,11 +26,10 @@ export function drawDiamond(
   ctx.lineWidth = 2;
 
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(x - 4, y - 4, width + 4, height + 4);
-    ctx.stroke();
+    drawSelectedHelper(ctx, x, y, width, height);
   }
+
+  ctx.beginPath();
   // Move to the first vertex
   ctx.moveTo(vertices[0].x, vertices[0].y);
 

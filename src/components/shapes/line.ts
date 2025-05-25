@@ -1,3 +1,5 @@
+import drawSelectedHelper from './transform/selectedHelper';
+
 export function drawLine(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -14,10 +16,7 @@ export function drawLine(
   const endY = Math.round(y + height);
 
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(startX - 2, startY - 2, width + 4, height + 4);
-    ctx.stroke();
+    drawSelectedHelper(ctx, x, y, width, height);
   }
 
   ctx.beginPath();
@@ -49,11 +48,9 @@ export function drawArrow(
 
   ctx.beginPath();
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(startX - 2, startY - 2, width + 4, height + 4);
-    ctx.stroke();
+    drawSelectedHelper(ctx, startX, startY, width, height);
   }
+  ctx.beginPath();
   ctx.lineWidth = 2;
   ctx.moveTo(startX, startY);
   ctx.lineTo(endX, endY);

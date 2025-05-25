@@ -1,3 +1,5 @@
+import drawSelectedHelper from './transform/selectedHelper';
+
 export function drawImage(
   ctx: CanvasRenderingContext2D,
   src: string,
@@ -9,10 +11,7 @@ export function drawImage(
 ) {
   if (!ctx) return;
   if (isSelected) {
-    ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
-    ctx.rect(x - 4, y - 4, width + 4, height + 4);
-    ctx.stroke();
+    drawSelectedHelper(ctx, x, y, width, height);
   }
   const img = new Image();
   img.src = src;
