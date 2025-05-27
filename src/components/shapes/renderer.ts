@@ -39,7 +39,8 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       break;
     case 'text':
       if (text) {
-        drawText(ctx, text, x, y, isSelected, height, width);
+        
+        drawText(ctx, text, x, y, isSelected, width, height);
       }
       break;
     case 'diamond':

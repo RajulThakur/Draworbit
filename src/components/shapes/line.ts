@@ -1,4 +1,4 @@
-import { drawSelectedHelper } from "./transform/selectionHelper";
+import {drawSelectedHelper} from './transform/selectionHelper';
 
 export function drawLine(
   ctx: CanvasRenderingContext2D,
@@ -16,7 +16,7 @@ export function drawLine(
   const endY = Math.round(y + height);
 
   if (isSelected) {
-    drawSelectedHelper(ctx, x, y, width, height);
+    drawSelectedHelper(ctx, x, y, width, height, 'line');
   }
 
   ctx.beginPath();
@@ -48,7 +48,7 @@ export function drawArrow(
 
   ctx.beginPath();
   if (isSelected) {
-    drawSelectedHelper(ctx, startX, startY, width, height);
+    drawSelectedHelper(ctx, startX, startY, width, height, 'arrow');
   }
   ctx.beginPath();
   ctx.lineWidth = 2;

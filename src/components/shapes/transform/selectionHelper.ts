@@ -1,3 +1,4 @@
+import {NavbarType} from '@/Type/navbarType';
 import {Shape} from '../types';
 import {
   HANDLE_SIZE,
@@ -20,98 +21,119 @@ export function drawSelectedHelper(
   alignedX: number,
   alignedY: number,
   alignedWidth: number,
-  alignedHeight: number
+  alignedHeight: number,
+  shape?: NavbarType
 ) {
   if (!ctx) return;
-  // Draw outer selection rectangle (blue)
   ctx.save();
   ctx.strokeStyle = SELECTION_COLOR;
   ctx.lineWidth = LINE_WIDTH;
+  if (shape === 'line' || shape === 'arrow') {
+    const CIRCLE_RADIUS = 6; // Size of endpoint circles
 
-  // Draw selection border
-  ctx.rect(
-    alignedX - SELECTION_GAP,
-    alignedY - SELECTION_GAP,
-    alignedWidth + SELECTION_GAP * 2,
-    alignedHeight + SELECTION_GAP * 2
-  );
-  ctx.stroke();
+    // Draw selection circles at start and end points
+    ctx.beginPath();
+    ctx.fillStyle = '#ffffff'; // White fill
+    ctx.strokeStyle = SELECTION_COLOR; // Blue border
 
-  // Draw corner handles
-  ctx.fillStyle = '#ffffff'; // White fill
-  ctx.strokeStyle = SELECTION_COLOR; // Blue border
-  ctx.lineWidth = 1;
+    // Start point circle
+    ctx.beginPath();
+    ctx.arc(alignedX, alignedY, CIRCLE_RADIUS, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
 
-  // Top-left handle
-  ctx.fillRect(
-    alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
-  ctx.strokeRect(
-    alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
+    // End point circle
+    ctx.beginPath();
+    ctx.arc(
+      alignedX + alignedWidth,
+      alignedY + alignedHeight,
+      CIRCLE_RADIUS,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+    ctx.stroke();
+  } else {
+    // Draw selection border
+    ctx.rect(
+      alignedX - SELECTION_GAP,
+      alignedY - SELECTION_GAP,
+      alignedWidth + SELECTION_GAP * 2,
+      alignedHeight + SELECTION_GAP * 2
+    );
+    ctx.stroke();
 
-  // Top-right handle
-  ctx.fillRect(
-    alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
-  ctx.strokeRect(
-    alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
+    // Draw corner handles
+    ctx.fillStyle = '#ffffff'; // White fill
+    ctx.strokeStyle = SELECTION_COLOR; // Blue border
+    ctx.lineWidth = 1;
 
-  // Bottom-left handle
-  ctx.fillRect(
-    alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
-  ctx.strokeRect(
-    alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
+    // Top-left handle
+    ctx.fillRect(
+      alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+    ctx.strokeRect(
+      alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
 
-  // Bottom-right handle
-  ctx.fillRect(
-    alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
-  ctx.strokeRect(
-    alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
-    alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
-    HANDLE_SIZE,
-    HANDLE_SIZE
-  );
+    // Top-right handle
+    ctx.fillRect(
+      alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+    ctx.strokeRect(
+      alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY - SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
 
+    // Bottom-left handle
+    ctx.fillRect(
+      alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+    ctx.strokeRect(
+      alignedX - SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+
+    // Bottom-right handle
+    ctx.fillRect(
+      alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+    ctx.strokeRect(
+      alignedX + alignedWidth + SELECTION_GAP - HANDLE_SIZE / 2,
+      alignedY + alignedHeight + SELECTION_GAP - HANDLE_SIZE / 2,
+      HANDLE_SIZE,
+      HANDLE_SIZE
+    );
+  }
   ctx.restore();
 }
 
 export function isPointInShape(x: number, y: number, shape: Shape): boolean {
-  if (shape.type === 'circle') {
-    return true;
-  } else {
-    return (
-      x >= shape.x &&
-      x <= shape.x + shape.width &&
-      y >= shape.y &&
-      y <= shape.y + shape.height
-    );
-  }
+  return (
+    x >= shape.x &&
+    x <= shape.x + shape.width &&
+    y >= shape.y &&
+    y <= shape.y + shape.height
+  );
 }
 
 export function getResizeHandle(
