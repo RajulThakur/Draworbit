@@ -66,7 +66,7 @@ export function drawSelectedHelper(
     // Draw corner handles
     ctx.fillStyle = '#ffffff'; // White fill
     ctx.strokeStyle = SELECTION_COLOR; // Blue border
-    ctx.lineWidth = 1;
+    ctx.lineWidth = LINE_WIDTH;
 
     // Top-left handle
     ctx.fillRect(
@@ -125,15 +125,6 @@ export function drawSelectedHelper(
     );
   }
   ctx.restore();
-}
-
-export function isPointInShape(x: number, y: number, shape: Shape): boolean {
-  return (
-    x >= shape.x &&
-    x <= shape.x + shape.width &&
-    y >= shape.y &&
-    y <= shape.y + shape.height
-  );
 }
 
 export function getResizeHandle(

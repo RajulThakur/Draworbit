@@ -1,4 +1,4 @@
-import { drawSelectedHelper } from "./transform/selectionHelper";
+import {drawSelectedHelper} from './transform/selectionHelper';
 
 export function drawDiamond(
   ctx: CanvasRenderingContext2D,
@@ -23,11 +23,10 @@ export function drawDiamond(
   ];
 
   ctx.beginPath();
-  ctx.lineWidth = 2;
-
   if (isSelected) {
     drawSelectedHelper(ctx, x, y, width, height);
   }
+  ctx.closePath();
 
   ctx.beginPath();
   // Move to the first vertex
@@ -37,7 +36,6 @@ export function drawDiamond(
   for (let i = 1; i < vertices.length; i++) {
     ctx.lineTo(vertices[i].x, vertices[i].y);
   }
-
   // Close the path to complete the diamond
   ctx.closePath();
   ctx.stroke();

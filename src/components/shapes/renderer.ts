@@ -9,6 +9,7 @@ import {drawText} from './text';
 import {drawSquare} from './square';
 import {drawDiamond} from './diamond';
 import {PenDraw} from './penDraw';
+import {ROOT_2} from '@/utils/const/const';
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width, isSelected} = shape;
@@ -39,7 +40,6 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       break;
     case 'text':
       if (text) {
-        
         drawText(ctx, text, x, y, isSelected, width, height);
       }
       break;
@@ -96,7 +96,7 @@ export function isPointInShape(
   const px = point.x;
   const py = point.y;
   const Type = shape.type;
-  console.log('Type send', Type);
+
   if (Type === 'arrow' || Type === 'line') {
     console.log('line');
     const padding = 2;
@@ -108,10 +108,10 @@ export function isPointInShape(
     const distToLine = pointLineDistance(px, py, x1, y1, x2, y2);
     return distToLine <= padding;
   } else if (Type === 'circle') {
-    const cx = shape.x + shape.width / 2;
-    const cy = shape.y + shape.height / 2;
-    const a = shape.width / 2 + padding;
-    const b = shape.height / 2 + padding;
+    const cx = shape.x + shape.width / ROOT_2;
+    const cy = shape.y + shape.height / ROOT_2;
+    const b = shape.height / ROOT_2;
+    const a = shape.width / ROOT_2;
     const dx = px - cx;
     const dy = py - cy;
     return (dx * dx) / (a * a) + (dy * dy) / (b * b) <= 1;
@@ -122,7 +122,6 @@ export function isPointInShape(
     const dy = Math.abs(py - cy);
     return dx + dy <= shape.width / 2 + padding;
   } else if (Type === 'rectangle' || Type === 'square') {
-    console.log('rectangle');
     // Check if the point is within the rectangle's bounds with padding
     return (
       px >= shape.x - padding &&

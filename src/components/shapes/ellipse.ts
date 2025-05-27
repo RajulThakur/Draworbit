@@ -1,4 +1,5 @@
-import { drawSelectedHelper } from "./transform/selectionHelper";
+import {ROOT_2} from '@/utils/const/const';
+import {drawSelectedHelper} from './transform/selectionHelper';
 
 export function drawEllipse(
   ctx: CanvasRenderingContext2D,
@@ -9,7 +10,6 @@ export function drawEllipse(
   isSelected: boolean = false
 ) {
   if (!ctx) return;
-  const ROOT_2 = 1.4142;
 
   width = Math.abs(width);
   height = Math.abs(height);
@@ -25,15 +25,8 @@ export function drawEllipse(
     drawSelectedHelper(ctx, Px, Py, radiusX * 2, radiusY * 2);
   }
 
-  // Save the current context state
-  ctx.save();
-  ctx.lineWidth = 2;
-
   // Draw the ellipse
   ctx.beginPath();
   ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
   ctx.stroke();
-
-  // Restore the context state
-  ctx.restore();
 }
