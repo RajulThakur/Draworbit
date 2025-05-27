@@ -16,7 +16,7 @@ const cursorContext = createContext<{
 }>({cursor: 'hand', scale: 1, setScale: () => {}, setCursor: () => {}});
 export function CursorProvider({children}: {children: ReactNode}) {
   const [cursor, setCursor] = useState<NavbarType>('hand');
-  const [scale, setScale] = useState<number>(100);
+  const [scale, setScale] = useState<number>(1);
   return (
     <cursorContext.Provider value={{cursor, scale, setCursor, setScale}}>
       {children}

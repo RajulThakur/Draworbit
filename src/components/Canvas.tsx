@@ -17,9 +17,9 @@ import {useEffect, useRef, useState} from 'react';
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
   const [dim, setDim] = useState({width: 0, height: 0});
-  const {cursor, setCursor} = useCursor();
+  const {cursor, setCursor, setScale, scale} = useCursor();
   const {strokeColor} = useColor();
-  const transformRef = useRef({x: 0, y: 0, scale: 1});
+  const transformRef = useRef({x: 0, y: 0, scale: scale});
   const dpr = useRef(1);
   const isDrawing = useRef(false);
   const isDragging = useRef(false);
@@ -34,6 +34,10 @@ export default function Canvas() {
     show: false,
     value: '',
   });
+  useEffect(() => {
+    // Update transform scale when scale changes
+    transformRef.current.scale = scale;
+  }, [scale]);
 
   useEffect(() => {
     const height = window.innerHeight;
@@ -202,10 +206,12 @@ export default function Canvas() {
 
     // Calculate zoom factor based on scroll delta
     const zoomFactor = Math.pow(1.01, -e.deltaY);
-    const newScale = currentScale * zoomFactor;
+    const newScale = Math.min(Math.max(currentScale * zoomFactor, 0.1), 10);
 
     // Limit scale range
-    transformRef.current.scale = Math.min(Math.max(newScale, 0.5), 10);
+    transformRef.current.scale = newScale;
+    // Update cursor scale
+    setScale(Math.abs(newScale));
 
     // Calculate new offset to keep mouse position fixed
     const newOffsetX = mouseX - worldPos.x * transformRef.current.scale;
@@ -318,7 +324,12 @@ export default function Canvas() {
         width: 0,
         height: 0,
         type: 'text' as Shape['type'], // Ensure 'text' matches the expected type
-        text: textInput.value,
+        text: {
+          value: textInput.value,
+          fontSize: 'md',
+          fontFamily: 'Arial',
+          fontStyle: 'normal',
+        },
         data: {src: ''},
       };
       appendShapes([newShape]);

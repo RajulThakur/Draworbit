@@ -30,4 +30,4 @@ export interface Text {
   fontStyle: FontStyle;
 }
 export type FontSize = 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl';
-export type FontStyle = 'bold' | 'italic' | 'semibold';
+export type FontStyle = 'bold' | 'italic' | 'semibold' | 'normal' | 'underline';
