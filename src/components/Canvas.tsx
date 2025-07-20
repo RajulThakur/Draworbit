@@ -398,7 +398,7 @@ export default function Canvas() {
               e.currentTarget.blur();
             }
           }}
-          className="fixed z-10 rounded-md border border-gray-300 bg-white px-4 py-6 text-xl shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none dark:border-gray-600 dark:bg-slate-800 dark:text-white"
+          className="fixed z-30 bg-transparent rounded-md  border border-amber-200 px-4 py-6 text-xl shadow-sm focus:outline-none dark:text-white"
           style={{
             height: `${40 / transformRef.current.scale}px`,
             left: `${(textInput.x - transformRef.current.x) / transformRef.current.scale}px`,
