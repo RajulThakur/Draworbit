@@ -3,6 +3,7 @@ import {
   AlignLeft,
   AlignRight,
   CodeXml,
+  CopyIcon,
   Pen,
   Trash2,
   Type,
@@ -116,6 +117,11 @@ export default function OptionMenu({showMenu=false}:{showMenu:boolean}) {
         <Row>
           <OptionsContainer>
             <Trash2
+              size={16}
+              strokeWidth={1.4}
+            />
+          </OptionsContainer><OptionsContainer>
+            <CopyIcon
               size={16}
               strokeWidth={1.4}
             />

@@ -9,10 +9,11 @@ import {
   updateShapes,
 } from '@/utils/helper/storage';
 import {isPointInShape, renderCanvas} from '@/components/shapes/renderer';
-import {screenToWorld} from '@/components/shapes/transform/canvasHelper';
+import {screenToWorld} from '@/math/canvasHelper';
 import {Shape} from '@/components/shapes/types';
 import type {MouseEvent, TouchEvent} from 'react';
 import {useEffect, useRef, useState} from 'react';
+import Input from './Input';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
@@ -385,30 +386,7 @@ export default function Canvas() {
         onTouchEnd={handleTouchEnd}
         className="dark:bg-background bg-white"
       />
-      {textInput.show && (
-        <input
-          type="text"
-          autoFocus
-          value={textInput.value}
-          onChange={(e) =>
-            setTextInput((prev) => ({...prev, value: e.target.value}))
-          }
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.currentTarget.blur();
-            }
-          }}
-          className="fixed z-30 bg-transparent rounded-md  border border-amber-200 px-4 py-6 text-xl shadow-sm focus:outline-none dark:text-white"
-          style={{
-            height: `${40 / transformRef.current.scale}px`,
-            left: `${(textInput.x - transformRef.current.x) / transformRef.current.scale}px`,
-            top: `${(textInput.y - transformRef.current.y) / transformRef.current.scale}px`,
-            transform: `scale(${1 / transformRef.current.scale})`,
-            transformOrigin: 'top left',
-          }}
-          onBlur={handleTextInputBlur}
-        />
-      )}
+      {textInput.show && <Input handleTextInputBlur={handleTextInputBlur} transformRef={transformRef} textInput={textInput} setTextInput={setTextInput} />}
     </>
   );
 }

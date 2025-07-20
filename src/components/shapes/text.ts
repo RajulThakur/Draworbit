@@ -11,8 +11,8 @@ export function drawText(
   width: number,
   height: number
 ) {
-  // ctx.font = `${SizeToPx(text.fontSize)} ${text.fontFamily}'`;
-  ctx.font = `24px ${text.fontFamily}'`;
+  ctx.font = `${SizeToPx(text.fontSize)} ${text.fontFamily}`;
+  // ctx.font = `24px ${text.fontFamily}'`;
   ctx.fillStyle = ctx.strokeStyle; // Use the same color as other shapes
   ctx.textBaseline = 'top';
   if (isSelected) {
