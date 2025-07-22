@@ -1,3 +1,4 @@
+import {SizeToPx} from '@/utils/helper/sizeToPx';
 import {Dispatch, RefObject, SetStateAction} from 'react';
 
 interface InputProps {
@@ -14,6 +15,7 @@ export default function Input({
   textInput,
   setTextInput,
 }: InputProps) {
+  const {scale} = transformRef.current;
   return (
     <textarea
       autoFocus
@@ -26,13 +28,12 @@ export default function Input({
           e.currentTarget.blur();
         }
       }}
-      className="fixed z-30 rounded-md border border-amber-200 bg-transparent px-4 py-6 text-xl shadow-sm focus:outline-none dark:text-white"
+      className="fixed z-30 field-sizing-content resize-none rounded-md border border-amber-200 bg-transparent shadow-sm focus:outline-none dark:text-white"
       style={{
-        height: `${20 * transformRef.current.scale}px`,
-        left: `${(textInput.x - transformRef.current.x) / transformRef.current.scale}px`,
-        top: `${(textInput.y - transformRef.current.y) / transformRef.current.scale}px`,
-        transform: `scale(${transformRef.current.scale})`,
-        transformOrigin: 'top left',
+        fontSize: `${(SizeToPx('md') * scale) / 2}px`,
+        lineHeight: `${(SizeToPx('md') / 1.7) * scale}px`,
+        left: `${textInput.x}px`,
+        top: `${textInput.y}px`,
       }}
       onBlur={handleTextInputBlur}
     />

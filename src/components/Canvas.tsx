@@ -9,7 +9,7 @@ import {
   updateShapes,
 } from '@/utils/helper/storage';
 import {isPointInShape, renderCanvas} from '@/components/shapes/renderer';
-import {screenToWorld} from '@/math/canvasHelper';
+import {screenToWorld, worldToScreen} from '@/math/canvasHelper';
 import {Shape} from '@/components/shapes/types';
 import type {MouseEvent, TouchEvent} from 'react';
 import {useEffect, useRef, useState} from 'react';
@@ -317,6 +317,10 @@ export default function Canvas() {
         scale
       );
 
+      const real=worldToScreen(x,y,offSetX,offSetY,scale);
+      
+      console.log(real);
+
       const newShape: Shape = {
         id: crypto.randomUUID(),
         x,
@@ -340,6 +344,7 @@ export default function Canvas() {
     setCursor('hand');
   };
   function handleClick(e: MouseEvent<HTMLCanvasElement>) {
+    console.log(`points x-${e.clientX} y-${e.clientY}`);
     const point = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
     const updatedPoints = screenToWorld(
       point.x,
@@ -386,7 +391,14 @@ export default function Canvas() {
         onTouchEnd={handleTouchEnd}
         className="dark:bg-background bg-white"
       />
-      {textInput.show && <Input handleTextInputBlur={handleTextInputBlur} transformRef={transformRef} textInput={textInput} setTextInput={setTextInput} />}
+      {textInput.show && (
+        <Input
+          handleTextInputBlur={handleTextInputBlur}
+          transformRef={transformRef}
+          textInput={textInput}
+          setTextInput={setTextInput}
+        />
+      )}
     </>
   );
 }
