@@ -1,9 +1,9 @@
 import {SizeToPx} from '@/utils/helper/sizeToPx';
-import {Dispatch, RefObject, SetStateAction} from 'react';
+import {Dispatch, FocusEventHandler, RefObject, SetStateAction} from 'react';
 
 interface InputProps {
   transformRef: RefObject<{x: number; y: number; scale: number}>;
-  handleTextInputBlur: () => void;
+  handleTextInputBlur: FocusEventHandler<HTMLTextAreaElement>;
   textInput: {x: number; y: number; show: boolean; value: string};
   setTextInput: Dispatch<
     SetStateAction<{x: number; y: number; show: boolean; value: string}>
@@ -20,15 +20,13 @@ export default function Input({
     <textarea
       autoFocus
       value={textInput.value}
-      onChange={(e) =>
-        setTextInput((prev) => ({...prev, value: e.target.value}))
-      }
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.currentTarget.blur();
-        }
+      onChange={(e) => {
+        const height = e.target.scrollHeight;
+        const width = e.target.scrollWidth;
+        console.log(`h-${height} w-${width}`);
+        return setTextInput((prev) => ({...prev, value: e.target.value}));
       }}
-      className="fixed z-30 field-sizing-content resize-none rounded-md border border-amber-200 bg-transparent shadow-sm focus:outline-none dark:text-white"
+      className="fixed z-30 field-sizing-content resize-none rounded-md  bg-transparent shadow-sm focus:outline-none dark:text-white"
       style={{
         fontSize: `${(SizeToPx('md') * scale) / 2}px`,
         lineHeight: `${(SizeToPx('md') / 1.7) * scale}px`,

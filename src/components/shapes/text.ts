@@ -14,10 +14,14 @@ export function drawText(
   ctx.font = `${SizeToPx(text.fontSize)}px ${text.fontFamily}`;
   // ctx.font = `24px ${text.fontFamily}'`;
   ctx.fillStyle = ctx.strokeStyle; // Use the same color as other shapes
-  ctx.textBaseline = 'top';
+  ctx.textBaseline = 'middle';
   if (isSelected) {
     drawSelectedHelper(ctx, x, y, width, height);
   }
   ctx.beginPath();
-  ctx.fillText(text.value, x, y);
+  text.value.split('\n').forEach((line, index) => {
+    const lineHeight = SizeToPx(text.fontSize) * 1.2; // Adjust line height as needed
+    ctx.fillText(line, x, y + index * lineHeight);
+  });
+  ctx.closePath();
 }

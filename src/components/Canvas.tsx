@@ -1,18 +1,22 @@
 'use client';
 
-import {useColor} from '@/context/colorContext';
-import {useCursor} from '@/context/cursorContext';
+import { isPointInShape, renderCanvas } from '@/components/shapes/renderer';
+import { Shape } from '@/components/shapes/types';
+import { useColor } from '@/context/colorContext';
+import { useCursor } from '@/context/cursorContext';
+import { screenToWorld, worldToScreen } from '@/math/canvasHelper';
 import {
   appendShapes,
   clearStorage,
   getShapes,
   updateShapes,
 } from '@/utils/helper/storage';
-import {isPointInShape, renderCanvas} from '@/components/shapes/renderer';
-import {screenToWorld, worldToScreen} from '@/math/canvasHelper';
-import {Shape} from '@/components/shapes/types';
-import type {MouseEvent, TouchEvent} from 'react';
-import {useEffect, useRef, useState} from 'react';
+import type {
+  FocusEvent,
+  MouseEvent,
+  TouchEvent
+} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Input from './Input';
 
 export default function Canvas() {
@@ -306,7 +310,7 @@ export default function Canvas() {
     handleMouseUp(mouseEvent as unknown as MouseEvent<HTMLCanvasElement>);
   };
 
-  const handleTextInputBlur = () => {
+  const handleTextInputBlur = (e: FocusEvent<HTMLTextAreaElement>) => {
     if (textInput.value.trim()) {
       const {x: offSetX, y: offSetY, scale} = transformRef.current;
       const {x, y} = screenToWorld(
@@ -316,9 +320,11 @@ export default function Canvas() {
         offSetY,
         scale
       );
+      const height = e.target.scrollHeight;
+      const width = e.target.scrollWidth;
+      console.log(`h-${height} w-${width}`);
 
-      const real=worldToScreen(x,y,offSetX,offSetY,scale);
-      
+      const real = worldToScreen(x, y, offSetX, offSetY, scale);
       console.log(real);
 
       const newShape: Shape = {
@@ -326,8 +332,8 @@ export default function Canvas() {
         x,
         y,
         isSelected: false,
-        width: 0,
-        height: 0,
+        width,
+        height,
         type: 'text' as Shape['type'], // Ensure 'text' matches the expected type
         text: {
           value: textInput.value,
