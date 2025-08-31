@@ -5,7 +5,7 @@ import Link from 'next/link';
 function Home() {
   return (
     <Link href="/app">
-      <div className="dark:bg-background relative h-dvh w-dvw bg-white">
+      <div className="relative z-50 h-dvh w-dvw bg-transparent">
         <div className="absolute top-15 left-5 hidden size-24 md:block">
           <Image
             fill
@@ -22,7 +22,7 @@ function Home() {
             src={'/arrow/menu.png'}
           />
         </div>
-        <div className="absolute right-2 bottom-12 md:hidden size-24 ">
+        <div className="absolute right-2 bottom-12 size-24 md:hidden">
           <Image
             fill
             className="object-contain dark:invert"

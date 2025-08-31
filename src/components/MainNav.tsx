@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Circle,
   Diamond,
+  Eraser,
   Hand,
   LetterText,
   Pencil,
@@ -100,15 +101,15 @@ function MainNav() {
         />
       ),
     },
-    // {
-    //   name: 'eraser',
-    //   icon: (
-    //     <Eraser
-    //       className={`${iconStyle}`}
-    //       strokeWidth={1.69}
-    //     />
-    //   ),
-    // },
+    {
+      name: 'eraser',
+      icon: (
+        <Eraser
+          className={`${iconStyle}`}
+          strokeWidth={1.69}
+        />
+      ),
+    },
     {
       name: 'clear all',
       icon: (

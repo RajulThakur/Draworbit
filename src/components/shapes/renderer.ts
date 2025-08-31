@@ -10,6 +10,7 @@ import {drawSquare} from './square';
 import {drawDiamond} from './diamond';
 import {PenDraw} from './penDraw';
 import {ROOT_2} from '@/utils/const/const';
+import { drawEraser } from './eraser';
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
   const {type, x, y, height, width, isSelected} = shape;
@@ -52,6 +53,7 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       }
       break;
     case 'eraser':
+      drawEraser(ctx,x,y);
       // Implement eraser functionality
       break;
     default:

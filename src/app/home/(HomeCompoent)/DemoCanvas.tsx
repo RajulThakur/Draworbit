@@ -63,6 +63,7 @@ export default function DemoCanvas() {
         for (let i = 0; i < trailRef.current.length - 2; i++) {
           const xc = (trailRef.current[i].x + trailRef.current[i + 1].x) / 2;
           const yc = (trailRef.current[i].y + trailRef.current[i + 1].y) / 2;
+            ctx.imageSmoothingEnabled = true;
 
           // Create gradient for this segment
           const gradient = ctx.createLinearGradient(

@@ -350,7 +350,6 @@ export default function Canvas() {
     setCursor('hand');
   };
   function handleClick(e: MouseEvent<HTMLCanvasElement>) {
-    console.log(`points x-${e.clientX} y-${e.clientY}`);
     const point = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
     const updatedPoints = screenToWorld(
       point.x,
