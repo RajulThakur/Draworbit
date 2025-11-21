@@ -1,5 +1,5 @@
-import {Data} from '@/context/dataContext';
-import {NavbarType} from '@/types/navbarType';
+import { Data } from '@/context/dataContext';
+import { NavbarType } from '@/types/navbarType';
 
 export interface Shape {
   id: string;
@@ -11,6 +11,8 @@ export interface Shape {
   path?: Path[];
   text?: Text;
   color?: string;
+  opacity?: number;
+  strokeWidth?: number;
   data: Data;
   isSelected: boolean;
 }
@@ -28,6 +30,7 @@ export interface Text {
   fontSize: FontSize;
   fontFamily: string;
   fontStyle: FontStyle;
+  align?: 'left' | 'center' | 'right';
 }
 export type FontSize = 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl';
 export type FontStyle = 'bold' | 'italic' | 'semibold' | 'normal' | 'underline';

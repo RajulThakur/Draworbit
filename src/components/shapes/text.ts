@@ -1,4 +1,4 @@
-import {SizeToPx} from '@/utils/helper/sizeToPx';
+import {SizeToPx} from '../../helper/sizeToPx';
 import {drawSelectedHelper} from './transform/selectionHelper';
 import {Text} from './types';
 

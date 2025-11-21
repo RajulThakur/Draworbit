@@ -1,34 +1,34 @@
 'use client';
 
 import { isPointInShape, renderCanvas } from '@/components/shapes/renderer';
-import { Shape } from '@/components/shapes/types';
 import { useColor } from '@/context/colorContext';
 import { useCursor } from '@/context/cursorContext';
-import { screenToWorld, worldToScreen } from '@/math/canvasHelper';
+import { useSelection } from '@/context/selectionContext';
+
+import type { FocusEvent, MouseEvent, TouchEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Input from './Input';
 import {
   appendShapes,
   clearStorage,
   getShapes,
   updateShapes,
-} from '@/utils/helper/storage';
-import type {
-  FocusEvent,
-  MouseEvent,
-  TouchEvent
-} from 'react';
-import { useEffect, useRef, useState } from 'react';
-import Input from './Input';
+} from '@/helper/storage';
+import { Shape } from '@/types/shape';
+import { screenToWorld } from '@/math/screenToWorld';
+import { worldToScreen } from '@/math/worldToScreen';
 
 export default function Canvas() {
   const c = useRef<HTMLCanvasElement | null>(null);
-  const [dim, setDim] = useState({width: 0, height: 0});
-  const {cursor, setCursor, setScale, scale} = useCursor();
-  const {strokeColor} = useColor();
-  const transformRef = useRef({x: 0, y: 0, scale: scale});
+  const [dim, setDim] = useState({ width: 0, height: 0 });
+  const { cursor, setCursor, setScale, scale } = useCursor();
+  const { strokeColor } = useColor();
+  const { setSelectedShape, setShowOptionMenu } = useSelection();
+  const transformRef = useRef({ x: 0, y: 0, scale: scale });
   const dpr = useRef(1);
   const isDrawing = useRef(false);
   const isDragging = useRef(false);
-  const lastPos = useRef({x: 0, y: 0});
+  const lastPos = useRef({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>(0);
   const ShapesRef = useRef<Shape[]>(getShapes() || []);
   const lastPinchDistance = useRef<number>(0);
@@ -47,13 +47,13 @@ export default function Canvas() {
   useEffect(() => {
     const height = window.innerHeight;
     const width = window.innerWidth;
-    setDim({width, height});
+    setDim({ width, height });
 
     // Handle window resize
     const handleResize = () => {
       const height = window.innerHeight;
       const width = window.innerWidth;
-      setDim({width, height});
+      setDim({ width, height });
     };
 
     window.addEventListener('resize', handleResize);
@@ -64,7 +64,7 @@ export default function Canvas() {
     const canvas = c.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', {willReadFrequently: true});
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
     dpr.current = window.devicePixelRatio || 1;
@@ -98,13 +98,38 @@ export default function Canvas() {
     };
   }, [dim, strokeColor, cursor, setCursor]);
 
+  // Listen for shapesUpdated events to refresh ShapesRef for live updates
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const custom = e as CustomEvent<Shape[]>;
+      console.log('[Canvas.shapesUpdated] event received', custom.detail?.length);
+      if (Array.isArray(custom.detail)) {
+        // mutate in place so the render loop's captured array sees updates
+        ShapesRef.current.splice(0, ShapesRef.current.length, ...custom.detail);
+        // keep selected shape in sync
+        if (selectedShape.current) {
+          const match = custom.detail.find(s => s.id === selectedShape.current?.id) || null;
+          console.log('[Canvas.syncSelected]', { before: selectedShape.current, after: match });
+          selectedShape.current = match;
+          setSelectedShape(match || null);
+          setShowOptionMenu(!!match);
+        }
+      } else {
+        const latest = getShapes();
+        ShapesRef.current.splice(0, ShapesRef.current.length, ...latest);
+      }
+    };
+    window.addEventListener('shapesUpdated', handler as EventListener);
+    return () => window.removeEventListener('shapesUpdated', handler as EventListener);
+  }, [setSelectedShape, setShowOptionMenu]);
+
   const handleMouseDown = (e: MouseEvent<HTMLCanvasElement>) => {
     if (cursor !== 'hand') {
       isDrawing.current = true;
-      const {x: offSetX, y: offSetY, scale} = transformRef.current;
+      const { x: offSetX, y: offSetY, scale } = transformRef.current;
       const adjustedX = e.clientX * dpr.current;
       const adjustedY = e.clientY * dpr.current;
-      const {x, y} = screenToWorld(
+      const { x, y } = screenToWorld(
         adjustedX,
         adjustedY,
         offSetX,
@@ -121,8 +146,11 @@ export default function Canvas() {
         width: 0,
         height: 0,
         type: cursor,
-        data: {src: ''},
-        path: cursor === 'draw' ? [{x, y}] : undefined,
+        data: { src: '' },
+        path: cursor === 'draw' ? [{ x, y }] : undefined,
+        color: strokeColor,
+        opacity: 100,
+        strokeWidth: 2,
       };
       ShapesRef.current.push(newShape);
       lastPos.current = {
@@ -144,14 +172,17 @@ export default function Canvas() {
     // ... rest of your existing handleMouseMove code ...
     const dx = e.clientX * dpr.current - lastPos.current.x;
     const dy = e.clientY * dpr.current - lastPos.current.y;
-    lastPos.current = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
+    lastPos.current = {
+      x: e.clientX * dpr.current,
+      y: e.clientY * dpr.current,
+    };
     if (isDrawing.current) {
       const shape = ShapesRef.current;
       const len = shape.length;
-      const {x: offSetX, y: offSetY, scale} = transformRef.current;
+      const { x: offSetX, y: offSetY, scale } = transformRef.current;
       const adjustedX = e.clientX * dpr.current;
       const adjustedY = e.clientY * dpr.current;
-      const {x, y} = screenToWorld(
+      const { x, y } = screenToWorld(
         adjustedX,
         adjustedY,
         offSetX,
@@ -160,7 +191,7 @@ export default function Canvas() {
       );
       // Calculate dimensions from initial position
       if (cursor === 'draw') {
-        shape[len - 1].path?.push({x, y});
+        shape[len - 1].path?.push({ x, y });
       } else {
         shape[len - 1].width = x - shape[len - 1].x;
         shape[len - 1].height = y - shape[len - 1].y;
@@ -174,7 +205,7 @@ export default function Canvas() {
 
   const handleMouseUp = (e: MouseEvent<HTMLCanvasElement>) => {
     if (cursor === 'text') {
-      setTextInput({x: e.clientX, y: e.clientY, show: true, value: ''});
+      setTextInput({ x: e.clientX, y: e.clientY, show: true, value: '' });
       return;
     }
     if (isDrawing.current) {
@@ -198,7 +229,11 @@ export default function Canvas() {
     const mouseY = e.clientY;
 
     // Get current transform values
-    const {x: offsetX, y: offsetY, scale: currentScale} = transformRef.current;
+    const {
+      x: offsetX,
+      y: offsetY,
+      scale: currentScale,
+    } = transformRef.current;
 
     // Calculate the world position of the mouse
     const worldPos = screenToWorld(
@@ -257,7 +292,11 @@ export default function Canvas() {
     const centerY = (touch1.clientY + touch2.clientY) / 2;
 
     // Update transform to zoom towards pinch center
-    const {x: offsetX, y: offsetY, scale: currentScale} = transformRef.current;
+    const {
+      x: offsetX,
+      y: offsetY,
+      scale: currentScale,
+    } = transformRef.current;
     const worldPos = screenToWorld(
       centerX,
       centerY,
@@ -306,14 +345,14 @@ export default function Canvas() {
   const handleTouchEnd = (e: TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     lastPinchDistance.current = 0;
-    const mouseEvent = new MouseEvent('mouseup', {clientX: 0, clientY: 0});
+    const mouseEvent = new MouseEvent('mouseup', { clientX: 0, clientY: 0 });
     handleMouseUp(mouseEvent as unknown as MouseEvent<HTMLCanvasElement>);
   };
 
   const handleTextInputBlur = (e: FocusEvent<HTMLTextAreaElement>) => {
     if (textInput.value.trim()) {
-      const {x: offSetX, y: offSetY, scale} = transformRef.current;
-      const {x, y} = screenToWorld(
+      const { x: offSetX, y: offSetY, scale } = transformRef.current;
+      const { x, y } = screenToWorld(
         textInput.x * dpr.current,
         textInput.y * dpr.current,
         offSetX,
@@ -341,16 +380,21 @@ export default function Canvas() {
           fontFamily: 'Arial',
           fontStyle: 'normal',
         },
-        data: {src: ''},
+        data: { src: '' },
       };
       appendShapes([newShape]);
       ShapesRef.current.push(newShape);
+      // select the new text and show option menu
+      ShapesRef.current.forEach(s => (s.isSelected = s.id === newShape.id));
+      selectedShape.current = newShape;
+      setSelectedShape(newShape);
+      setShowOptionMenu(true);
     }
-    setTextInput({x: 0, y: 0, show: false, value: ''});
+    setTextInput({ x: 0, y: 0, show: false, value: '' });
     setCursor('hand');
   };
   function handleClick(e: MouseEvent<HTMLCanvasElement>) {
-    const point = {x: e.clientX * dpr.current, y: e.clientY * dpr.current};
+    const point = { x: e.clientX * dpr.current, y: e.clientY * dpr.current };
     const updatedPoints = screenToWorld(
       point.x,
       point.y,
@@ -358,24 +402,43 @@ export default function Canvas() {
       transformRef.current.y,
       transformRef.current.scale
     );
-    ShapesRef.current.forEach((shape) => {
-      const isPointing = isPointInShape(updatedPoints, shape);
-      if (shape.isSelected) {
-        shape.isSelected = false;
-        selectedShape.current = null;
-      }
 
+    let clickedShape: Shape | null = null;
+
+    // Check if any shape was clicked
+    for (const shape of ShapesRef.current) {
+      const isPointing = isPointInShape(updatedPoints, shape);
       if (isPointing) {
-        shape.isSelected = !shape.isSelected;
-        selectedShape.current = shape;
+        clickedShape = shape;
+        break;
       }
-    });
+    }
+    if (clickedShape) {
+      // Deselect all other shapes
+      ShapesRef.current.forEach(shape => {
+        shape.isSelected = false;
+      });
+
+      // Select the clicked shape
+      clickedShape.isSelected = true;
+      selectedShape.current = clickedShape;
+      setSelectedShape(clickedShape);
+      setShowOptionMenu(true);
+    } else {
+      // Clicked on empty space - deselect all
+      ShapesRef.current.forEach(shape => {
+        shape.isSelected = false;
+      });
+      selectedShape.current = null;
+      setSelectedShape(null);
+      setShowOptionMenu(false);
+    }
   }
 
   return (
     <>
       <canvas
-        id="canvas"
+        id='canvas'
         ref={c}
         style={{
           width: `${dim.width}px`,
@@ -394,7 +457,7 @@ export default function Canvas() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="dark:bg-background bg-white"
+        className='dark:bg-background bg-white'
       />
       {textInput.show && (
         <Input

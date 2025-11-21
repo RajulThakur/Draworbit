@@ -1,7 +1,7 @@
 'use client';
 import {useCursor} from '@/context/cursorContext';
 import {useData} from '@/context/dataContext';
-import {NavOptions} from '@/Type/navbarType';
+import {NavOptions} from '@/types/navbarType';
 import {
   ArrowRight,
   Circle,

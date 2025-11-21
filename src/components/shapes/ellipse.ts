@@ -1,4 +1,4 @@
-import {ROOT_2} from '@/utils/const/const';
+import {ROOT_2} from '../../const/const';
 import {drawSelectedHelper} from './transform/selectionHelper';
 
 export function drawEllipse(

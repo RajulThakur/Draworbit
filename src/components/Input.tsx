@@ -1,4 +1,4 @@
-import {SizeToPx} from '@/utils/helper/sizeToPx';
+import {SizeToPx} from '../helper/sizeToPx';
 import {Dispatch, FocusEventHandler, RefObject, SetStateAction} from 'react';
 
 interface InputProps {

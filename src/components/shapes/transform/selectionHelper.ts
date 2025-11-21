@@ -1,4 +1,4 @@
-import {NavbarType} from '@/Type/navbarType';
+import {NavbarType} from '@/types/navbarType';
 import {Shape} from '../types';
 import {
   HANDLE_SIZE,

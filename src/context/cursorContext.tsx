@@ -1,4 +1,4 @@
-import {NavbarType} from '@/Type/navbarType';
+import {NavbarType} from '@/types/navbarType';
 import {
   createContext,
   Dispatch,

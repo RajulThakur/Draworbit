@@ -1,24 +1,36 @@
-import {Point, Shape} from './types';
-import {drawLine} from './line';
-import {drawArrow} from './line';
-import {drawRectangle} from './rectangle';
-import {drawEllipse} from './ellipse';
-import {drawImage} from './image';
-import {drawText} from './text';
+import { drawLine } from './line';
+import { drawArrow } from './line';
+import { drawRectangle } from './rectangle';
+import { drawEllipse } from './ellipse';
+import { drawImage } from './image';
+import { drawText } from './text';
 // import {drawSelection} from './selection';
-import {drawSquare} from './square';
-import {drawDiamond} from './diamond';
-import {PenDraw} from './penDraw';
-import {ROOT_2} from '@/utils/const/const';
+import { drawSquare } from './square';
+import { drawDiamond } from './diamond';
+import { PenDraw } from './penDraw';
 import { drawEraser } from './eraser';
+import { Point, Shape } from '@/types/shape';
+import { ROOT_2 } from '@/const/const';
 
 export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
-  const {type, x, y, height, width, isSelected} = shape;
+  const { type, x, y, height, width, isSelected, color, opacity, strokeWidth } = shape;
   const path = shape?.path;
   const text = shape?.text;
 
   // Save the current context state
   ctx.save();
+
+  // Set color and opacity
+  if (color) {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+  }
+  if (opacity !== undefined) {
+    ctx.globalAlpha = opacity / 100;
+  }
+  if (strokeWidth !== undefined) {
+    ctx.lineWidth = strokeWidth;
+  }
 
   switch (type) {
     case 'line':
@@ -53,7 +65,7 @@ export function renderShape(ctx: CanvasRenderingContext2D, shape: Shape) {
       }
       break;
     case 'eraser':
-      drawEraser(ctx,x,y);
+      drawEraser(ctx, x, y);
       // Implement eraser functionality
       break;
     default:
@@ -77,13 +89,13 @@ export function renderCanvas(
   transform: Transform
 ): number {
   if (!canvas || !ctx) return 0;
-  const {x, y, scale} = transform;
+  const { x, y, scale } = transform;
   // Clear the entire canvas
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.setTransform(scale, 0, 0, scale, x, y);
 
-  shapes.forEach((shape) => renderShape(ctx, shape));
+  shapes.forEach(shape => renderShape(ctx, shape));
   ctx.restore();
   return requestAnimationFrame(() => {
     renderCanvas(canvas, shapes, ctx, transform);
