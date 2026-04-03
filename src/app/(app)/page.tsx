@@ -8,6 +8,8 @@ function Home() {
       <div className="relative z-50 h-dvh w-dvw bg-transparent">
         <div className="absolute top-15 left-5 hidden size-24 md:block">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="arrow"
@@ -16,6 +18,8 @@ function Home() {
         </div>
         <div className="absolute right-5 bottom-5 hidden size-24 md:top-15 md:right-5 md:block">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="menu"
@@ -24,6 +28,8 @@ function Home() {
         </div>
         <div className="absolute right-2 bottom-12 size-24 md:hidden">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="menu"
@@ -32,6 +38,8 @@ function Home() {
         </div>
         <div className="absolute bottom-10 left-15 size-24 md:bottom-15">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="zoom"
@@ -40,6 +48,8 @@ function Home() {
         </div>
         <div className="absolute bottom-15 left-35 hidden size-24">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="undo"
@@ -48,6 +58,8 @@ function Home() {
         </div>
         <div className="absolute bottom-5 left-80 hidden size-24">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="redo"
@@ -56,6 +68,8 @@ function Home() {
         </div>
         <div className="absolute right-20 bottom-4 size-24 md:right-15 md:bottom-7">
           <Image
+            loading='eager'
+            sizes='100px'
             fill
             className="object-contain dark:invert"
             alt="arrow"
